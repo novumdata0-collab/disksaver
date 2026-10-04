@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiskSaver — сохраните нужное со старого диска</title>
+<meta name="description" content="Бесплатная программа для Windows: находит документы, таблицы и фото на подключённом диске и копирует их в архив с проверкой перед форматированием.">
+<meta property="og:title" content="DiskSaver">
+<meta property="og:description" content="Найдите нужные файлы на старом диске, сохраните их с проверкой и форматируйте спокойно.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://novumdata0-collab.github.io/disksaver/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='6' width='26' height='20' rx='4' fill='%2315233F'/%3E%3Ccircle cx='12' cy='16' r='5' fill='none' stroke='%23E8EBEE' stroke-width='2'/%3E%3Ccircle cx='24' cy='21' r='2' fill='%23E89B0C'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;750&family=JetBrains+Mono:wght@400;500&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root {
+  --bg: #E8EBEE;
+  --surface: #F6F7F8;
+  --ink: #15233F;
+  --muted: #56627A;
+  --line: #C9CFD6;
+  --led: #E89B0C;
+  --ok: #0E7A6B;
+  --window: #FFFFFF;
+  --window-bar: #DDE2E7;
+  --track: #E3E7EB;
+  --shadow: 0 30px 60px -30px rgba(21, 35, 63, .35);
+  --font: "Onest", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10161F;
+    --surface: #161E29;
+    --ink: #E4E9F0;
+    --muted: #93A0B4;
+    --line: #2A3546;
+    --led: #F2A62A;
+    --ok: #3CB9A4;
+    --window: #1B2431;
+    --window-bar: #243041;
+    --track: #2A3546;
+    --shadow: 0 30px 60px -30px rgba(0, 0, 0, .7);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10161F;
+  --surface: #161E29;
+  --ink: #E4E9F0;
+  --muted: #93A0B4;
+  --line: #2A3546;
+  --led: #F2A62A;
+  --ok: #3CB9A4;
+  --window: #1B2431;
+  --window-bar: #243041;
+  --track: #2A3546;
+  --shadow: 0 30px 60px -30px rgba(0, 0, 0, .7);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 17px/1.6 var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--led);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+/* Шапка */
+.top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 750; font-size: 19px; text-decoration: none; }
+.brand svg { flex: none; }
+.top-actions { display: flex; align-items: center; gap: 6px; }
+.lang {
+  display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px;
+}
+.lang button {
+  font: 500 14px var(--font); color: var(--muted); background: none; border: 0;
+  padding: 4px 11px; border-radius: 999px; cursor: pointer;
+}
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.gh-link { font-size: 15px; font-weight: 500; text-decoration: none; padding: 6px 10px; }
+.gh-link:hover { text-decoration: underline; }
+
+/* Первый экран */
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: 56px; align-items: center;
+  padding: 40px 0 88px;
+}
+h1 {
+  font-weight: 750; font-size: clamp(38px, 5.4vw, 64px); line-height: 1.04;
+  letter-spacing: -0.035em; margin: 0 0 24px; text-wrap: balance;
+}
+.lead { font-size: 19px; color: var(--muted); max-width: 34em; margin: 0 0 32px; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 600 16px var(--font); text-decoration: none;
+  padding: 14px 22px; border-radius: 10px; border: 1.5px solid var(--ink);
+}
+.btn-primary { background: var(--ink); color: var(--bg); }
+.btn-primary:hover { background: color-mix(in srgb, var(--ink) 86%, var(--led)); }
+.btn-ghost:hover { background: var(--surface); }
+.fineprint { margin: 16px 0 0; font-size: 14px; color: var(--muted); }
+
+/* Окно программы с анимацией */
+.app {
+  background: var(--window); border-radius: 14px; box-shadow: var(--shadow);
+  border: 1px solid var(--line); overflow: hidden;
+}
+.app-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--window-bar); padding: 10px 14px; font-size: 13px; color: var(--muted);
+}
+.led {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--line); flex: none;
+}
+.app[data-state="scan"] .led, .app[data-state="copy"] .led {
+  background: var(--led); box-shadow: 0 0 8px var(--led);
+  animation: blink .35s steps(2) infinite;
+}
+.app[data-state="done"] .led { background: var(--ok); }
+@keyframes blink { 50% { opacity: .35; } }
+.app-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app-body { display: grid; grid-template-columns: 44% 56%; min-height: 300px; }
+.cats { list-style: none; margin: 0; padding: 14px 16px; border-right: 1px solid var(--line); }
+.cats li { padding: 7px 0; font-size: 14px; }
+.cat-row { display: flex; justify-content: space-between; gap: 8px; }
+.cat-row b { font-weight: 600; }
+.cat-row span { font-variant-numeric: tabular-nums; color: var(--muted); }
+.bar { height: 4px; background: var(--track); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--ink); border-radius: 2px; transition: width .2s linear; }
+.log {
+  margin: 0; padding: 14px 16px; list-style: none;
+  font: 400 12.5px/1.75 var(--mono); color: var(--muted);
+  overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end;
+}
+.log li { flex: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.log li:last-child { color: var(--ink); }
+.app-foot {
+  border-top: 1px solid var(--line); padding: 12px 16px;
+  display: flex; align-items: center; gap: 14px; font-size: 13.5px;
+}
+.progress { flex: 0 0 20%; height: 6px; background: var(--track); border-radius: 3px; overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--led); }
+.app[data-state="done"] .progress i { background: var(--ok); }
+.status { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app[data-state="done"] .status { color: var(--ok); font-weight: 600; }
+.replay {
+  font: 500 13px var(--font); color: var(--muted); background: none;
+  border: 1px solid var(--line); border-radius: 6px; padding: 3px 9px; cursor: pointer;
+  visibility: hidden;
+}
+.app[data-state="done"] .replay { visibility: visible; }
+
+/* Разделы */
+section { padding: 72px 0; border-top: 1px solid var(--line); }
+h2 {
+  font-weight: 750; font-size: clamp(28px, 3.4vw, 40px); line-height: 1.12;
+  letter-spacing: -0.025em; margin: 0 0 16px; max-width: 20em;
+}
+.section-lead { color: var(--muted); max-width: 38em; margin: 0 0 44px; }
+
+.steps {
+  list-style: none; margin: 0; padding: 0; counter-reset: step;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px;
+}
+.steps li { counter-increment: step; }
+.steps li::before {
+  content: counter(step);
+  display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 16px;
+  border: 1.5px solid var(--ink); border-radius: 50%;
+  font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.steps li:last-child::before { background: var(--ink); color: var(--bg); }
+.steps h3 { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
+.steps p { margin: 0; color: var(--muted); font-size: 16px; }
+
+.types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 56px; margin: 0; }
+.type-row {
+  display: grid; grid-template-columns: 150px 1fr; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid var(--line);
+}
+.type-row dt { font-weight: 600; }
+.type-row dd { margin: 0; color: var(--muted); font-size: 15.5px; }
+.types-note { margin: 28px 0 0; color: var(--muted); max-width: 40em; }
+
+.safety { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 56px; align-items: start; }
+.checks { list-style: none; margin: 0; padding: 0; }
+.checks li {
+  position: relative; padding: 0 0 22px 38px;
+}
+.checks li::before {
+  content: ""; position: absolute; left: 0; top: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ok) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6 11.5l3.2 3.2L16 8' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;
+}
+.checks b { display: block; font-weight: 600; }
+.checks span { color: var(--muted); font-size: 16px; }
+
+.faq { max-width: 760px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary {
+  cursor: pointer; list-style: none; padding: 20px 36px 20px 0; position: relative;
+  font-weight: 600; font-size: 18px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: ""; position: absolute; right: 6px; top: 50%; width: 10px; height: 10px; margin-top: -7px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg); transition: transform .2s;
+}
+.faq details[open] summary::after { transform: rotate(225deg); margin-top: -2px; }
+.faq details p { margin: 0 0 20px; color: var(--muted); max-width: 40em; }
+
+.final { text-align: left; padding: 88px 0; }
+.final h2 { margin-bottom: 28px; }
+
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; font-size: 14.5px; color: var(--muted); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.foot a { color: var(--ink); }
+
+@media (max-width: 920px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-top: 16px; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .types { grid-template-columns: 1fr; }
+  .safety { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  body { font-size: 16px; }
+  .gh-link { display: none; }
+  .app-body { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .progress { flex-basis: 16%; }
+  .cats { border-right: 0; border-bottom: 1px solid var(--line); }
+  .log { height: 120px; }
+  .steps { grid-template-columns: 1fr; gap: 28px; }
+  .type-row { grid-template-columns: 1fr; gap: 2px; }
+  section { padding: 56px 0; }
+  .btn { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#" aria-label="DiskSaver">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="4" fill="currentColor"/><circle cx="12" cy="16" r="5" fill="none" stroke="var(--bg)" stroke-width="2"/><circle cx="24" cy="21" r="2" fill="var(--led)"/></svg>
+      DiskSaver
+    </a>
+    <div class="top-actions">
+      <a class="gh-link" href="https://github.com/novumdata0-collab/disksaver">GitHub</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <h1 data-i18n="h1">Сохраните нужное со старого диска и форматируйте спокойно</h1>
+        <p class="lead" data-i18n="lead">DiskSaver находит на подключённом диске документы, таблицы, фото и видео, копирует выбранное в архив и проверяет каждую копию. Системный мусор и кэши программа пропускает сама.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/novumdata0-collab/disksaver/releases/latest/download/DiskSaver.exe">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="download">Скачать для Windows</span>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/novumdata0-collab/disksaver" data-i18n="source">Исходный код</a>
+        </div>
+        <p class="fineprint" data-i18n="fineprint">Бесплатно. Один файл, установка не нужна. Windows 10 и 11.</p>
+      </div>
+
+      <div class="app" id="demo" data-state="idle" aria-label="Демонстрация работы программы" role="img">
+        <div class="app-bar">
+          <span class="led"></span>
+          <span class="app-title" data-i18n="demoTitle">DiskSaver — диск E: Seagate, 931 ГБ</span>
+        </div>
+        <div class="app-body">
+          <ul class="cats" id="cats"></ul>
+          <ul class="log" id="log"></ul>
+        </div>
+        <div class="app-foot">
+          <div class="progress"><i id="progress"></i></div>
+          <span class="status" id="status"></span>
+          <button type="button" class="replay" id="replay" data-i18n="replay">Ещё раз</button>
+        </div>
+      </div>
+    </div>
+
+    <section id="how">
+      <h2 data-i18n="howTitle">Четыре шага от подключения до архива</h2>
+      <p class="section-lead" data-i18n="howLead">Никаких настроек перед стартом. Программа сама замечает новый диск и подсказывает, что делать дальше.</p>
+      <ol class="steps">
+        <li><h3 data-i18n="s1t">Подключите диск</h3><p data-i18n="s1d">Через SATA, USB-бокс или док-станцию. Диск сразу появится в списке.</p></li>
+        <li><h3 data-i18n="s2t">Просканируйте</h3><p data-i18n="s2d">Слева видно, сколько найдено документов, фото и видео и сколько места они занимают.</p></li>
+        <li><h3 data-i18n="s3t">Отметьте нужное</h3><p data-i18n="s3d">Снимайте галочки целыми категориями или по одному файлу. Есть поиск по имени и папке.</p></li>
+        <li><h3 data-i18n="s4t">Скопируйте в архив</h3><p data-i18n="s4d">Выберите папку на другом диске. Программа скопирует файлы, проверит их и покажет итог.</p></li>
+      </ol>
+    </section>
+
+    <section id="types">
+      <h2 data-i18n="typesTitle">Что программа ищет</h2>
+      <p class="section-lead" data-i18n="typesLead">Шесть категорий по умолчанию. Мелкие картинки вроде иконок и миниатюр в список не попадают.</p>
+      <dl class="types">
+        <div class="type-row"><dt data-i18n="tDocs">Документы</dt><dd>doc, docx, docm, odt, rtf, pdf, txt, djvu</dd></div>
+        <div class="type-row"><dt data-i18n="tSheets">Таблицы</dt><dd>xls, xlsx, xlsm, xlsb, csv, ods</dd></div>
+        <div class="type-row"><dt data-i18n="tSlides">Презентации</dt><dd>ppt, pptx, pps, ppsx, odp</dd></div>
+        <div class="type-row"><dt data-i18n="tPhotos">Фото</dt><dd>jpg, png, heic, tiff, webp, gif, bmp, cr2, cr3, nef, arw, dng, orf, rw2, raf</dd></div>
+        <div class="type-row"><dt data-i18n="tArchives">Архивы</dt><dd>zip, rar, 7z</dd></div>
+        <div class="type-row"><dt data-i18n="tVideo">Видео</dt><dd>mp4, mov, avi, mkv, m4v, 3gp, mts, wmv</dd></div>
+      </dl>
+      <p class="types-note" data-i18n="typesNote">Нужны чертежи, базы 1С или файлы Photoshop? Добавьте свою категорию и расширения в меню «Настройки → Расширения файлов».</p>
+    </section>
+
+    <section id="safety">
+      <div class="safety">
+        <div>
+          <h2 data-i18n="safeTitle">Форматировать можно, когда всё проверено</h2>
+          <p class="section-lead" data-i18n="safeLead">После форматирования ошибку не исправить, поэтому программа перестраховывается за вас.</p>
+        </div>
+        <ul class="checks">
+          <li><b data-i18n="c1t">Каждая копия сверяется с оригиналом</b><span data-i18n="c1d">Программа перечитывает скопированный файл и сравнивает контрольную сумму MD5.</span></li>
+          <li><b data-i18n="c2t">Важное копируется первым</b><span data-i18n="c2d">Сначала документы и таблицы, потом фото, видео в конце. Если диск начнёт сбоить, главное уже будет в архиве.</span></li>
+          <li><b data-i18n="c3t">Отчёт о каждом файле</b><span data-i18n="c3d">В папке архива остаются manifest.csv со списком всех файлов и errors.log, если что-то не скопировалось.</span></li>
+          <li><b data-i18n="c4t">Защита от случайностей</b><span data-i18n="c4d">Архив нельзя сохранить на тот же диск, а перед стартом проверяется свободное место.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 data-i18n="faqTitle">Вопросы</h2>
+      <div class="faq">
+        <details>
+          <summary data-i18n="q1">Windows пишет «Неизвестный издатель». Это опасно?</summary>
+          <p data-i18n="a1">Нет. Файл пока не подписан цифровой подписью, поэтому SmartScreen предупреждает о нём. Нажмите «Подробнее» и «Выполнить в любом случае». Исходный код открыт на GitHub, его можно проверить и собрать самостоятельно.</p>
+        </details>
+        <details>
+          <summary data-i18n="q2">Программа отправляет мои файлы куда-нибудь?</summary>
+          <p data-i18n="a2">Нет. DiskSaver работает без интернета и только читает исходный диск. Файлы копируются в папку, которую вы выбрали сами.</p>
+        </details>
+        <details>
+          <summary data-i18n="q3">Нужно ли устанавливать .NET или что-то ещё?</summary>
+          <p data-i18n="a3">Нет. DiskSaver — это один exe-файл, всё нужное уже внутри. Подходит Windows 10 и 11, 64-бит.</p>
+        </details>
+        <details>
+          <summary data-i18n="q4">Диск очень старый и щёлкает. Поможет?</summary>
+          <p data-i18n="a4">Программа пропускает нечитаемые папки и продолжает работу, а важные файлы копирует первыми. Но если диск серьёзно повреждён, лучше сначала снять с него образ специальной утилитой или обратиться в лабораторию восстановления данных.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2 data-i18n="finalTitle">Освободите старый диск, не потеряв ни одной фотографии</h2>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://github.com/novumdata0-collab/disksaver/releases/latest/download/DiskSaver.exe">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span data-i18n="download">Скачать для Windows</span>
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/novumdata0-collab/disksaver/releases" data-i18n="allReleases">Все версии</a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap foot">
+    <span data-i18n="madeBy">Разработано в ООО «Дата новум»</span>
+    <a href="https://datanovum.ru">datanovum.ru</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var T = {
+    ru: {
+      title: "DiskSaver — сохраните нужное со старого диска",
+      h1: "Сохраните нужное со старого диска и форматируйте спокойно",
+      lead: "DiskSaver находит на подключённом диске документы, таблицы, фото и видео, копирует выбранное в архив и проверяет каждую копию. Системный мусор и кэши программа пропускает сама.",
+      download: "Скачать для Windows",
+      source: "Исходный код",
+      fineprint: "Бесплатно. Один файл, установка не нужна. Windows 10 и 11.",
+      demoTitle: "DiskSaver — диск E: Seagate, 931 ГБ",
+      demoLabel: "Демонстрация работы программы",
+      replay: "Ещё раз",
+      howTitle: "Четыре шага от подключения до архива",
+      howLead: "Никаких настроек перед стартом. Программа сама замечает новый диск и подсказывает, что делать дальше.",
+      s1t: "Подключите диск", s1d: "Через SATA, USB-бокс или док-станцию. Диск сразу появится в списке.",
+      s2t: "Просканируйте", s2d: "Слева видно, сколько найдено документов, фото и видео и сколько места они занимают.",
+      s3t: "Отметьте нужное", s3d: "Снимайте галочки целыми категориями или по одному файлу. Есть поиск по имени и папке.",
+      s4t: "Скопируйте в архив", s4d: "Выберите папку на другом диске. Программа скопирует файлы, проверит их и покажет итог.",
+      typesTitle: "Что программа ищет",
+      typesLead: "Шесть категорий по умолчанию. Мелкие картинки вроде иконок и миниатюр в список не попадают.",
+      tDocs: "Документы", tSheets: "Таблицы", tSlides: "Презентации", tPhotos: "Фото", tArchives: "Архивы", tVideo: "Видео",
+      typesNote: "Нужны чертежи, базы 1С или файлы Photoshop? Добавьте свою категорию и расширения в меню «Настройки → Расширения файлов».",
+      safeTitle: "Форматировать можно, когда всё проверено",
+      safeLead: "После форматирования ошибку не исправить, поэтому программа перестраховывается за вас.",
+      c1t: "Каждая копия сверяется с оригиналом", c1d: "Программа перечитывает скопированный файл и сравнивает контрольную сумму MD5.",
+      c2t: "Важное копируется первым", c2d: "Сначала документы и таблицы, потом фото, видео в конце. Если диск начнёт сбоить, главное уже будет в архиве.",
+      c3t: "Отчёт о каждом файле", c3d: "В папке архива остаются manifest.csv со списком всех файлов и errors.log, если что-то не скопировалось.",
+      c4t: "Защита от случайностей", c4d: "Архив нельзя сохранить на тот же диск, а перед стартом проверяется свободное место.",
+      faqTitle: "Вопросы",
+      q1: "Windows пишет «Неизвестный издатель». Это опасно?",
+      a1: "Нет. Файл пока не подписан цифровой подписью, поэтому SmartScreen предупреждает о нём. Нажмите «Подробнее» и «Выполнить в любом случае». Исходный код открыт на GitHub, его можно проверить и собрать самостоятельно.",
+      q2: "Программа отправляет мои файлы куда-нибудь?",
+      a2: "Нет. DiskSaver работает без интернета и только читает исходный диск. Файлы копируются в папку, которую вы выбрали сами.",
+      q3: "Нужно ли устанавливать .NET или что-то ещё?",
+      a3: "Нет. DiskSaver — это один exe-файл, всё нужное уже внутри. Подходит Windows 10 и 11, 64-бит.",
+      q4: "Диск очень старый и щёлкает. Поможет?",
+      a4: "Программа пропускает нечитаемые папки и продолжает работу, а важные файлы копирует первыми. Но если диск серьёзно повреждён, лучше сначала снять с него образ специальной утилитой или обратиться в лабораторию восстановления данных.",
+      finalTitle: "Освободите старый диск, не потеряв ни одной фотографии",
+      allReleases: "Все версии",
+      madeBy: "Разработано в ООО «Дата новум»",
+      cats: ["Документы", "Таблицы", "Презентации", "Фото", "Архивы", "Видео"],
+      scanning: function (n) { return "Сканирование… найдено " + n + " файлов"; },
+      copying: function (a, b) { return "Копирование " + a + " из " + b; },
+      done: function (n) { return "Скопировано и проверено: " + n; },
+      paths: [
+        "Users\\Anna\\Documents\\Договор_аренды_2021.docx",
+        "Users\\Anna\\Desktop\\Бюджет_семьи.xlsx",
+        "DCIM\\2019\\IMG_4821.JPG",
+        "Работа\\Отчёты\\Квартал_3.pdf",
+        "Фото\\Отпуск 2018\\DSC_0193.NEF",
+        "Проекты\\Презентация_клиенту.pptx",
+        "Users\\Anna\\Videos\\Выпускной.mp4",
+        "Работа\\Бухгалтерия\\Сверка_2020.xls",
+        "Архив\\Сканы_документов.zip",
+        "DCIM\\2020\\IMG_5307.HEIC",
+        "Users\\Anna\\Documents\\Резюме.pdf",
+        "Фото\\Дача\\DSC_0447.JPG"
+      ]
+    },
+    en: {
+      title: "DiskSaver — rescue what matters from an old drive",
+      h1: "Rescue what matters from an old drive, then format it with confidence",
+      lead: "DiskSaver finds documents, spreadsheets, photos and videos on a connected drive, copies the ones you pick to an archive and verifies every copy. System files and caches are skipped automatically.",
+      download: "Download for Windows",
+      source: "Source code",
+      fineprint: "Free. A single file, no installation. Windows 10 and 11.",
+      demoTitle: "DiskSaver — drive E: Seagate, 931 GB",
+      demoLabel: "Demo of the app at work",
+      replay: "Replay",
+      howTitle: "Four steps from plugging in to a safe archive",
+      howLead: "Nothing to configure first. The app notices the new drive and tells you what to do next.",
+      s1t: "Connect the drive", s1d: "Over SATA, a USB enclosure or a docking station. It shows up in the list right away.",
+      s2t: "Scan it", s2d: "The left panel shows how many documents, photos and videos were found and how much space they take.",
+      s3t: "Pick what to keep", s3d: "Uncheck whole categories or single files. Search by file name or folder.",
+      s4t: "Copy to the archive", s4d: "Choose a folder on another drive. The app copies the files, verifies them and shows a summary.",
+      typesTitle: "What it looks for",
+      typesLead: "Six categories out of the box. Tiny images such as icons and thumbnails are left out.",
+      tDocs: "Documents", tSheets: "Spreadsheets", tSlides: "Presentations", tPhotos: "Photos", tArchives: "Archives", tVideo: "Videos",
+      typesNote: "Need CAD drawings, accounting databases or Photoshop files? Add your own category and extensions under Settings → File extensions.",
+      safeTitle: "Format only when everything is verified",
+      safeLead: "A mistake can't be undone after formatting, so the app plays it safe for you.",
+      c1t: "Every copy is checked against the original", c1d: "The app re-reads each copied file and compares its MD5 checksum.",
+      c2t: "Important files go first", c2d: "Documents and spreadsheets first, then photos, videos last. If the drive starts failing, the essentials are already safe.",
+      c3t: "A report for every file", c3d: "The archive folder gets manifest.csv listing every file, plus errors.log if anything failed to copy.",
+      c4t: "Guards against slips", c4d: "The archive can't be saved to the source drive, and free space is checked before copying starts.",
+      faqTitle: "Questions",
+      q1: "Windows says \"Unknown publisher\". Is it dangerous?",
+      a1: "No. The file isn't code-signed yet, so SmartScreen shows a warning. Click \"More info\" and then \"Run anyway\". The source code is open on GitHub, so you can review it and build it yourself.",
+      q2: "Does the app send my files anywhere?",
+      a2: "No. DiskSaver works offline and only reads the source drive. Files are copied to the folder you choose.",
+      q3: "Do I need to install .NET or anything else?",
+      a3: "No. DiskSaver is a single exe with everything built in. It runs on 64-bit Windows 10 and 11.",
+      q4: "My drive is very old and clicking. Will this help?",
+      a4: "The app skips unreadable folders, keeps going and copies important files first. If the drive is badly damaged, though, make a disk image with a dedicated tool first, or contact a data recovery lab.",
+      finalTitle: "Free up the old drive without losing a single photo",
+      allReleases: "All releases",
+      madeBy: "Made by Data Novum LLC",
+      cats: ["Documents", "Spreadsheets", "Presentations", "Photos", "Archives", "Videos"],
+      scanning: function (n) { return "Scanning… " + n + " files found"; },
+      copying: function (a, b) { return "Copying " + a + " of " + b; },
+      done: function (n) { return "Copied and verified: " + n; },
+      paths: [
+        "Users\\Anna\\Documents\\Lease_agreement_2021.docx",
+        "Users\\Anna\\Desktop\\Family_budget.xlsx",
+        "DCIM\\2019\\IMG_4821.JPG",
+        "Work\\Reports\\Q3_report.pdf",
+        "Photos\\Vacation 2018\\DSC_0193.NEF",
+        "Projects\\Client_pitch.pptx",
+        "Users\\Anna\\Videos\\Graduation.mp4",
+        "Work\\Accounting\\Reconciliation_2020.xls",
+        "Archive\\Document_scans.zip",
+        "DCIM\\2020\\IMG_5307.HEIC",
+        "Users\\Anna\\Documents\\Resume.pdf",
+        "Photos\\Country house\\DSC_0447.JPG"
+      ]
+    }
+  };
+
+  // Итоговые числа демо по категориям и категория каждого пути из списка.
+  var FINAL = [412, 96, 14, 3870, 21, 58];
+  var PATH_CAT = [0, 1, 3, 0, 3, 2, 5, 1, 4, 3, 0, 3];
+  var TOTAL = FINAL.reduce(function (a, b) { return a + b; }, 0);
+
+  var lang = "ru";
+  var demo = document.getElementById("demo");
+  var catsEl = document.getElementById("cats");
+  var logEl = document.getElementById("log");
+  var statusEl = document.getElementById("status");
+  var progressEl = document.getElementById("progress");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var timer = null;
+  var state = { phase: "idle", counts: [0, 0, 0, 0, 0, 0], copied: 0, logIndex: 0 };
+
+  function fmt(n) { return n.toLocaleString(lang === "ru" ? "ru-RU" : "en-US"); }
+
+  function renderCats() {
+    var t = T[lang];
+    catsEl.innerHTML = t.cats.map(function (name, i) {
+      var pct = Math.round(state.counts[i] / FINAL[3] * 100);
+      return '<li><div class="cat-row"><b>' + name + '</b><span>' + fmt(state.counts[i]) +
+        '</span></div><div class="bar"><i style="width:' + Math.max(pct, state.counts[i] ? 2 : 0) + '%"></i></div></li>';
+    }).join("");
+  }
+
+  function pushLog(text) {
+    var li = document.createElement("li");
+    li.textContent = text;
+    logEl.appendChild(li);
+    while (logEl.children.length > 9) logEl.removeChild(logEl.firstChild);
+  }
+
+  function renderStatus() {
+    var t = T[lang];
+    var found = state.counts.reduce(function (a, b) { return a + b; }, 0);
+    if (state.phase === "scan") statusEl.textContent = t.scanning(fmt(found));
+    else if (state.phase === "copy") statusEl.textContent = t.copying(fmt(state.copied), fmt(TOTAL));
+    else if (state.phase === "done") statusEl.textContent = t.done(fmt(TOTAL));
+    else statusEl.textContent = "";
+    var p = state.phase === "copy" ? state.copied / TOTAL : state.phase === "done" ? 1 : 0;
+    progressEl.style.width = (p * 100) + "%";
+    demo.setAttribute("data-state", state.phase);
+  }
+
+  function showFinal() {
+    clearInterval(timer);
+    state.phase = "done";
+    state.counts = FINAL.slice();
+    state.copied = TOTAL;
+    logEl.innerHTML = "";
+    T[lang].paths.slice(-8).forEach(pushLog);
+    renderCats();
+    renderStatus();
+  }
+
+  function run() {
+    clearInterval(timer);
+    state = { phase: "scan", counts: [0, 0, 0, 0, 0, 0], copied: 0, logIndex: 0 };
+    logEl.innerHTML = "";
+    if (reduceMotion) { showFinal(); return; }
+
+    var tick = 0, scanTicks = 40, copyTicks = 22;
+    timer = setInterval(function () {
+      tick++;
+      if (state.phase === "scan") {
+        var k = Math.min(tick / scanTicks, 1);
+        var eased = 1 - Math.pow(1 - k, 2);
+        state.counts = FINAL.map(function (f) { return Math.round(f * eased); });
+        if (tick % 3 === 1) {
+          var paths = T[lang].paths;
+          pushLog("E:\\" + paths[state.logIndex % paths.length]);
+          state.logIndex++;
+        }
+        if (tick >= scanTicks) { state.phase = "copy"; tick = 0; }
+        renderCats();
+      } else if (state.phase === "copy") {
+        state.copied = Math.round(TOTAL * Math.min(tick / copyTicks, 1));
+        if (tick % 4 === 1) {
+          var p2 = T[lang].paths;
+          pushLog("✓ " + p2[(state.logIndex++) % p2.length]);
+        }
+        if (tick >= copyTicks) { showFinal(); return; }
+      }
+      renderStatus();
+    }, 90);
+  }
+
+  function applyLang(next) {
+    lang = next;
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    document.title = t.title;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (typeof t[key] === "string") el.textContent = t[key];
+    });
+    demo.setAttribute("aria-label", t.demoLabel);
+    document.querySelectorAll(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
+    });
+    if (state.phase === "done" || state.phase === "idle") {
+      logEl.innerHTML = "";
+      if (state.phase === "done") t.paths.slice(-8).forEach(pushLog);
+    }
+    renderCats();
+    renderStatus();
+    try { localStorage.setItem("disksaver-lang", lang); } catch (e) {}
+  }
+
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { applyLang(b.getAttribute("data-lang")); });
+  });
+  document.getElementById("replay").addEventListener("click", run);
+
+  var saved = null;
+  try { saved = localStorage.getItem("disksaver-lang"); } catch (e) {}
+  var initial = saved || ((navigator.language || "ru").toLowerCase().indexOf("ru") === 0 ? "ru" : "en");
+  applyLang(initial === "en" ? "en" : "ru");
+
+  // Анимация запускается, когда окно программы попадает в поле зрения.
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) { io.disconnect(); setTimeout(run, 500); }
+    }, { threshold: 0.4 });
+    io.observe(demo);
+  } else {
+    run();
+  }
+})();
+</script>
+</body>
+</html>
