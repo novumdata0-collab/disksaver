@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiskSaver.Core\DiskSaver.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>DiskSaver</Product>
+    <Company>ООО «Дата новум»</Company>
+    <Copyright>© ООО «Дата новум», datanovum.ru</Copyright>
+    <Description>Сохранение нужных файлов с диска перед форматированием</Description>
+    <Version>1.1.0</Version>
+  </PropertyGroup>
+
+</Project>
