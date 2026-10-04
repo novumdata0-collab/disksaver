@@ -486,3 +486,5 @@ $RECYCLE.BIN/
 # DiskSaver: готовый exe публикуется в GitHub Releases, а не в репозитории
 /DiskSaver.exe
 
+# Черновики для публикаций вне репозитория
+/promo/

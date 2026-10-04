@@ -1,0 +1,21 @@
+name: Предложение / Feature request
+description: Идея, как сделать программу лучше / An idea to improve the app
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую задачу это решит / What problem does it solve
+      description: Опишите ситуацию, в которой вам не хватает этой возможности / Describe when you miss this feature
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Как вы это видите / Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Как вы решаете это сейчас / Current workaround

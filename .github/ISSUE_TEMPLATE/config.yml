@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Сайт проекта / Project website
+    url: https://novumdata0-collab.github.io/disksaver/
+    about: Описание, инструкция и частые вопросы / Overview, how-to and FAQ
+  - name: ООО «Дата новум» / Data Novum LLC
+    url: https://datanovum.ru
+    about: Разработчик программы / The developer

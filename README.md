@@ -1,6 +1,13 @@
 # DiskSaver
 
+[![Release](https://img.shields.io/github/v/release/novumdata0-collab/disksaver)](https://github.com/novumdata0-collab/disksaver/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/novumdata0-collab/disksaver/total)](https://github.com/novumdata0-collab/disksaver/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+![Windows 10/11](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4)
+
 **[Русский](#русский) · [English](#english)** · Сайт / Website: **[novumdata0-collab.github.io/disksaver](https://novumdata0-collab.github.io/disksaver/)**
+
+![DiskSaver: сканирование диска и копирование в архив / scanning a drive and copying to an archive](docs/assets/demo.gif)
 
 ---
 
@@ -72,6 +79,14 @@ PLAN.md              — план развития
 ### Планы
 
 Иконка в трее, запоминание просканированных дисков (SQLite), пауза и продолжение копирования, сверхбыстрое сканирование через чтение MFT, поиск дубликатов, безопасное форматирование из программы. Подробнее — в [PLAN.md](PLAN.md).
+
+### Участие в разработке
+
+Нашли ошибку или есть идея — создайте [Issue](https://github.com/novumdata0-collab/disksaver/issues/new/choose). Pull request'ы приветствуются. История изменений — в [CHANGELOG.md](CHANGELOG.md).
+
+### Лицензия
+
+Свободная лицензия [MIT](LICENSE): программу можно бесплатно использовать, изменять и распространять, в том числе в коммерческих целях, с сохранением уведомления об авторских правах.
 
 ### Разработчик
 
@@ -149,6 +164,14 @@ PLAN.md              — development roadmap (in Russian)
 ### Roadmap
 
 System tray icon, remembering scanned drives (SQLite), pause/resume copying, ultra-fast scanning by reading the NTFS MFT, duplicate detection, safe formatting from within the app. See [PLAN.md](PLAN.md).
+
+### Contributing
+
+Found a bug or have an idea? Open an [issue](https://github.com/novumdata0-collab/disksaver/issues/new/choose). Pull requests are welcome. See [CHANGELOG.md](CHANGELOG.md) for the release history.
+
+### License
+
+[MIT](LICENSE) — free to use, modify and distribute, including commercially, as long as the copyright notice is kept.
 
 ### Developer
 

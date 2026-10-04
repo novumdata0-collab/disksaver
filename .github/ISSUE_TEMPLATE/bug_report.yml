@@ -1,0 +1,54 @@
+name: Ошибка / Bug report
+description: Программа работает не так, как ожидалось / Something doesn't work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо, что сообщаете об ошибке! Не прикладывайте личные файлы и пути с персональными данными.
+        Thanks for reporting! Please don't attach personal files or paths containing personal data.
+  - type: textarea
+    id: what
+    attributes:
+      label: Что произошло / What happened
+      description: Что вы делали и что пошло не так / What you did and what went wrong
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Что ожидалось / Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Как повторить / Steps to reproduce
+      placeholder: |
+        1. Подключить диск ... / Connect a drive ...
+        2. Нажать «Сканировать» / Click "Scan"
+        3. ...
+  - type: input
+    id: version
+    attributes:
+      label: Версия DiskSaver / DiskSaver version
+      description: Справка → О программе / Help → About
+      placeholder: "1.1.0"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Версия Windows / Windows version
+      placeholder: "Windows 11 23H2"
+  - type: input
+    id: drive
+    attributes:
+      label: Диск / Drive
+      description: Тип, файловая система, способ подключения / Type, file system, connection
+      placeholder: "HDD 1 ТБ, NTFS, USB-бокс"
+  - type: textarea
+    id: logs
+    attributes:
+      label: errors.log или текст ошибки / errors.log or error message
+      render: text
