@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.locale.1.12.0.schema.json
 PackageIdentifier: DataNovum.DiskSaver
-PackageVersion: 1.1.0
+PackageVersion: 1.2.0
 PackageLocale: ru-RU
 Publisher: ООО «Дата новум»
 PublisherUrl: https://datanovum.ru
@@ -12,7 +12,7 @@ ShortDescription: Поиск нужных файлов на старом дис�
 Description: |-
   DiskSaver сканирует подключённый HDD или SSD и находит документы, таблицы, презентации, фото (включая RAW), архивы и видео, пропуская системные папки и кэши.
   Отметьте нужное и скопируйте на другой диск: каждая копия проверяется по MD5, в архив записывается отчёт manifest.csv.
-  Категории и расширения файлов настраиваются.
+  Категории и расширения файлов настраиваются. Интерфейс на русском и английском.
 Tags:
   - резервное-копирование
   - архив

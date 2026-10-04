@@ -9,8 +9,8 @@ winget install DataNovum.DiskSaver
 
 ## Как отправить
 
-1. Проверить описание: `winget validate --manifest winget/manifests/d/DataNovum/DiskSaver/1.1.0` (схема 1.12)
-2. Сделать fork `microsoft/winget-pkgs`, скопировать папку `manifests/d/DataNovum/DiskSaver/1.1.0` в тот же путь и открыть pull request.
+1. Проверить описание: `winget validate --manifest winget/manifests/d/DataNovum/DiskSaver/1.2.0` (схема 1.12)
+2. Сделать fork `microsoft/winget-pkgs`, скопировать папку `manifests/d/DataNovum/DiskSaver/1.2.0` в тот же путь и открыть pull request.
 
 ## Новая версия
 

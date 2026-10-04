@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
 PackageIdentifier: DataNovum.DiskSaver
-PackageVersion: 1.1.0
+PackageVersion: 1.2.0
 PackageLocale: en-US
 Publisher: Data Novum LLC
 PublisherUrl: https://datanovum.ru
@@ -15,7 +15,7 @@ ShortDescription: Find important files on an old drive and archive them with ver
 Description: |-
   DiskSaver scans a connected HDD or SSD for documents, spreadsheets, presentations, photos (including RAW), archives and videos, skipping system folders and caches.
   Pick what to keep and copy it to another drive: every copy is verified by MD5, and a manifest.csv report is written to the archive.
-  Categories and file extensions are customizable. The user interface is in Russian.
+  Categories and file extensions are customizable. The user interface is available in English and Russian.
 Moniker: disksaver
 Tags:
   - backup
@@ -26,6 +26,6 @@ Tags:
   - drive
   - data-recovery
   - copy
-ReleaseNotesUrl: https://github.com/novumdata0-collab/disksaver/releases/tag/v1.1.0
+ReleaseNotesUrl: https://github.com/novumdata0-collab/disksaver/releases/tag/v1.2.0
 ManifestType: defaultLocale
 ManifestVersion: 1.12.0
