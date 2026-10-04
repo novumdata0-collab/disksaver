@@ -1,22 +1,28 @@
 <Window x:Class="DiskSaver.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="О программе" Width="440" SizeToContent="Height" ResizeMode="NoResize"
+        xmlns:loc="clr-namespace:DiskSaver.Localization"
+        Title="{loc:L AboutTitle}" Width="440" SizeToContent="Height" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False" FontSize="13">
     <StackPanel Margin="24,20">
         <TextBlock Text="DiskSaver" FontSize="24" FontWeight="SemiBold" />
         <TextBlock x:Name="VersionText" Foreground="Gray" Margin="0,2,0,14" />
 
-        <TextBlock TextWrapping="Wrap" Margin="0,0,0,14"
-                   Text="Быстрый поиск документов, таблиц, фото и других нужных файлов на подключённом диске и их сохранение в архив перед форматированием." />
+        <TextBlock TextWrapping="Wrap" Margin="0,0,0,14" Text="{loc:L AboutDescription}" />
 
-        <TextBlock Text="Разработчик:" Foreground="Gray" />
-        <TextBlock Text="ООО «Дата новум»" FontWeight="SemiBold" FontSize="15" Margin="0,2,0,2" />
+        <TextBlock Text="{loc:L AboutDeveloper}" Foreground="Gray" />
+        <TextBlock Text="{loc:L AboutCompany}" FontWeight="SemiBold" FontSize="15" Margin="0,2,0,2" />
         <TextBlock>
             <Hyperlink NavigateUri="https://datanovum.ru" RequestNavigate="Hyperlink_RequestNavigate">datanovum.ru</Hyperlink>
         </TextBlock>
 
-        <Button Content="Закрыть" HorizontalAlignment="Right" Margin="0,20,0,0" Padding="18,4" MinHeight="28"
+        <TextBlock Margin="0,14,0,0" Foreground="Gray">
+            <Hyperlink NavigateUri="https://github.com/novumdata0-collab/disksaver" RequestNavigate="Hyperlink_RequestNavigate">
+                <Run Text="{loc:L AboutLicense}" />
+            </Hyperlink>
+        </TextBlock>
+
+        <Button Content="{loc:L Close}" HorizontalAlignment="Right" Margin="0,20,0,0" Padding="18,4" MinHeight="28"
                 IsCancel="True" IsDefault="True" />
     </StackPanel>
 </Window>

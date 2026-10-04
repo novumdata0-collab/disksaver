@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>DiskSaver — сохранение файлов перед форматированием</value>
+  </data>
+  <data name="MenuFile" xml:space="preserve">
+    <value>_Файл</value>
+  </data>
+  <data name="MenuExit" xml:space="preserve">
+    <value>_Выход</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Настройки</value>
+  </data>
+  <data name="MenuExtensions" xml:space="preserve">
+    <value>_Расширения файлов…</value>
+  </data>
+  <data name="MenuLanguage" xml:space="preserve">
+    <value>_Язык</value>
+  </data>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>_Справка</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>_О программе</value>
+  </data>
+  <data name="DriveLabel" xml:space="preserve">
+    <value>Диск:</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>⟳ Обновить</value>
+  </data>
+  <data name="RefreshTip" xml:space="preserve">
+    <value>Обновить список дисков</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Сканировать</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Стоп</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Поиск:</value>
+  </data>
+  <data name="SearchTip" xml:space="preserve">
+    <value>Поиск по имени и пути</value>
+  </data>
+  <data name="CategoryCheckTip" xml:space="preserve">
+    <value>Отметить или снять все файлы категории</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Открыть файл</value>
+  </data>
+  <data name="ShowInExplorer" xml:space="preserve">
+    <value>Показать в проводнике</value>
+  </data>
+  <data name="ColName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="ColFolder" xml:space="preserve">
+    <value>Папка</value>
+  </data>
+  <data name="ColCategory" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="ColSize" xml:space="preserve">
+    <value>Размер</value>
+  </data>
+  <data name="ColModified" xml:space="preserve">
+    <value>Изменён</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>dd.MM.yyyy HH:mm</value>
+  </data>
+  <data name="SelectVisible" xml:space="preserve">
+    <value>Отметить все в списке</value>
+  </data>
+  <data name="UnselectVisible" xml:space="preserve">
+    <value>Снять все в списке</value>
+  </data>
+  <data name="DestinationHeader" xml:space="preserve">
+    <value>Куда сохранить архив</value>
+  </data>
+  <data name="DestinationTip" xml:space="preserve">
+    <value>Папка на другом диске</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Обзор…</value>
+  </data>
+  <data name="LayoutPreserve" xml:space="preserve">
+    <value>Сохранить структуру папок</value>
+  </data>
+  <data name="LayoutByCategory" xml:space="preserve">
+    <value>Разложить по категориям (фото/видео по годам)</value>
+  </data>
+  <data name="CopySelected" xml:space="preserve">
+    <value>Копировать выбранное →</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Все файлы</value>
+  </data>
+  <data name="CategorySelectedPart" xml:space="preserve">
+    <value> · выбрано {0}</value>
+  </data>
+  <data name="StatusInitial" xml:space="preserve">
+    <value>Выберите диск и нажмите «Сканировать».</value>
+  </data>
+  <data name="PlaceholderScanning" xml:space="preserve">
+    <value>Идёт сканирование… Список появится после завершения, счётчики слева обновляются на ходу.</value>
+  </data>
+  <data name="PlaceholderEmpty" xml:space="preserve">
+    <value>Выберите диск сверху и нажмите «Сканировать».</value>
+  </data>
+  <data name="PlaceholderNoMatch" xml:space="preserve">
+    <value>Нет файлов, подходящих под фильтр.</value>
+  </data>
+  <data name="CatalogSaved" xml:space="preserve">
+    <value>Расширения сохранены.</value>
+  </data>
+  <data name="CatalogSavedRescan" xml:space="preserve">
+    <value> Чтобы найти файлы с новыми расширениями, просканируйте диск заново.</value>
+  </data>
+  <data name="NewDriveConnected" xml:space="preserve">
+    <value>Подключён диск {0}. Нажмите «Сканировать».</value>
+  </data>
+  <data name="DriveUnavailable" xml:space="preserve">
+    <value>Диск {0} недоступен. Возможно, его отключили.</value>
+  </data>
+  <data name="ScanProgress" xml:space="preserve">
+    <value>Сканирование {0}… найдено {1} файлов, просмотрено папок {2}</value>
+  </data>
+  <data name="ScanDone" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="ScanStopped" xml:space="preserve">
+    <value>Остановлено</value>
+  </data>
+  <data name="ScanError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="ScanFailed" xml:space="preserve">
+    <value>Сканирование прервано: {0}</value>
+  </data>
+  <data name="ScanSummary" xml:space="preserve">
+    <value>{0} за {1}: {2} файлов, {3}{4}.</value>
+  </data>
+  <data name="ScanUnreadable" xml:space="preserve">
+    <value>, папок не прочитано: {0}</value>
+  </data>
+  <data name="DestinationMissing" xml:space="preserve">
+    <value>Укажите существующую папку на диске-архиве.</value>
+  </data>
+  <data name="DestinationSameDrive" xml:space="preserve">
+    <value>Нельзя сохранять архив на тот же диск, который собираетесь форматировать.</value>
+  </data>
+  <data name="CopyProgress" xml:space="preserve">
+    <value>Копирование {0} из {1} · {2} из {3}</value>
+  </data>
+  <data name="CopyProgressErrors" xml:space="preserve">
+    <value> · ошибок: {0}</value>
+  </data>
+  <data name="CopyNotStarted" xml:space="preserve">
+    <value>Копирование не начато.</value>
+  </data>
+  <data name="CopyStatusDone" xml:space="preserve">
+    <value>Скопировано {0} из {1}</value>
+  </data>
+  <data name="CopyStatusFailed" xml:space="preserve">
+    <value>, с ошибками: {0}</value>
+  </data>
+  <data name="CopyStatusCancelled" xml:space="preserve">
+    <value> (остановлено)</value>
+  </data>
+  <data name="CopyStatusArchive" xml:space="preserve">
+    <value>. Архив: {0}</value>
+  </data>
+  <data name="CopyResultOk" xml:space="preserve">
+    <value>Все файлы ({0}) скопированы и проверены.</value>
+  </data>
+  <data name="CopyResultPartial" xml:space="preserve">
+    <value>Скопировано: {0}
+Ошибок: {1}</value>
+  </data>
+  <data name="CopyResultCancelled" xml:space="preserve">
+    <value>
+Копирование было остановлено.</value>
+  </data>
+  <data name="CopyResultErrorLog" xml:space="preserve">
+    <value>
+Список ошибок: {0}</value>
+  </data>
+  <data name="CopyResultDontFormat" xml:space="preserve">
+    <value>
+
+НЕ форматируйте диск, пока не разберётесь с ошибками.</value>
+  </data>
+  <data name="CopyResultOpenFolder" xml:space="preserve">
+    <value>Папка архива:
+{0}
+
+Открыть её?</value>
+  </data>
+  <data name="CopyResultTitle" xml:space="preserve">
+    <value>DiskSaver — итог копирования</value>
+  </data>
+  <data name="BrowseTitle" xml:space="preserve">
+    <value>Куда сохранить архив</value>
+  </data>
+  <data name="SelectionSummary" xml:space="preserve">
+    <value>Выбрано для копирования: {0} файлов, {1}</value>
+  </data>
+  <data name="OpenFileFailed" xml:space="preserve">
+    <value>Не удалось открыть файл: {0}</value>
+  </data>
+  <data name="ExitWhileCopying" xml:space="preserve">
+    <value>Идёт копирование. Прервать и выйти?</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Непредвиденная ошибка:
+{0}</value>
+  </data>
+  <data name="CatTitle" xml:space="preserve">
+    <value>Расширения файлов</value>
+  </data>
+  <data name="CatHint" xml:space="preserve">
+    <value>Выберите категорию слева и отредактируйте её расширения или добавьте свою категорию. Изменения применяются после «Сохранить».</value>
+  </data>
+  <data name="CatAdd" xml:space="preserve">
+    <value>+ Добавить</value>
+  </data>
+  <data name="CatRemove" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="CatName" xml:space="preserve">
+    <value>Название категории:</value>
+  </data>
+  <data name="CatExtensions" xml:space="preserve">
+    <value>Расширения (через запятую или пробел, точка не обязательна):</value>
+  </data>
+  <data name="CatMinSize" xml:space="preserve">
+    <value>Пропускать файлы меньше, КБ:</value>
+  </data>
+  <data name="CatMinSizeTip" xml:space="preserve">
+    <value>0 — брать все файлы. Для фото полезно ~30 КБ, чтобы не собирать иконки.</value>
+  </data>
+  <data name="CatGroupByYear" xml:space="preserve">
+    <value>При раскладке по категориям делить по годам</value>
+  </data>
+  <data name="CatReset" xml:space="preserve">
+    <value>Сбросить по умолчанию</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="CatNew" xml:space="preserve">
+    <value>Новая категория</value>
+  </data>
+  <data name="CatConfirmRemove" xml:space="preserve">
+    <value>Удалить категорию «{0}»?</value>
+  </data>
+  <data name="CatConfirmReset" xml:space="preserve">
+    <value>Вернуть стандартные категории и расширения? Ваши изменения будут потеряны.</value>
+  </data>
+  <data name="CatErrName" xml:space="preserve">
+    <value>Укажите название категории.</value>
+  </data>
+  <data name="CatErrDuplicateName" xml:space="preserve">
+    <value>Категория «{0}» встречается дважды.</value>
+  </data>
+  <data name="CatErrInvalidExt" xml:space="preserve">
+    <value>Непонятные расширения: {0}.
+Используйте буквы и цифры, например: docx, pdf.</value>
+  </data>
+  <data name="CatErrNoExt" xml:space="preserve">
+    <value>Добавьте хотя бы одно расширение.</value>
+  </data>
+  <data name="CatErrMinSize" xml:space="preserve">
+    <value>Минимальный размер — целое число КБ, 0 или больше.</value>
+  </data>
+  <data name="CatErrDuplicateExt" xml:space="preserve">
+    <value>Расширение {0} уже есть в категории «{1}».</value>
+  </data>
+  <data name="CatErrTitle" xml:space="preserve">
+    <value>Категория «{0}»</value>
+  </data>
+  <data name="CatUnnamed" xml:space="preserve">
+    <value>без названия</value>
+  </data>
+  <data name="CatErrNone" xml:space="preserve">
+    <value>Нужна хотя бы одна категория.</value>
+  </data>
+  <data name="CatSaveFailed" xml:space="preserve">
+    <value>Не удалось сохранить настройки: {0}</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Версия {0}</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Быстрый поиск документов, таблиц, фото и других нужных файлов на подключённом диске и их сохранение в архив перед форматированием.</value>
+  </data>
+  <data name="AboutDeveloper" xml:space="preserve">
+    <value>Разработчик:</value>
+  </data>
+  <data name="AboutCompany" xml:space="preserve">
+    <value>ООО «Дата новум»</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>Свободная программа, лицензия MIT</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+</root>

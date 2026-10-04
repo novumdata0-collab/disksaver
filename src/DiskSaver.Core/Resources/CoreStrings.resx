@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cat_documents" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="Cat_spreadsheets" xml:space="preserve">
+    <value>Spreadsheets</value>
+  </data>
+  <data name="Cat_presentations" xml:space="preserve">
+    <value>Presentations</value>
+  </data>
+  <data name="Cat_photos" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="Cat_archives" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="Cat_video" xml:space="preserve">
+    <value>Videos</value>
+  </data>
+  <data name="NotEnoughSpace" xml:space="preserve">
+    <value>Not enough space on {0}: {1} needed, {2} free.</value>
+  </data>
+  <data name="VerifyMismatch" xml:space="preserve">
+    <value>The copy doesn't match the original</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="ManifestHeader" xml:space="preserve">
+    <value>Status;Category;Source;Copy;Size;Modified;MD5;Error</value>
+  </data>
+  <data name="DriveNoLabel" xml:space="preserve">
+    <value>No label</value>
+  </data>
+  <data name="DriveRemovable" xml:space="preserve">
+    <value>, removable</value>
+  </data>
+  <data name="DriveSystem" xml:space="preserve">
+    <value> — SYSTEM</value>
+  </data>
+  <data name="SizeUnits" xml:space="preserve">
+    <value>B,KB,MB,GB,TB</value>
+  </data>
+</root>

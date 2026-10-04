@@ -17,7 +17,10 @@
     <Company>ООО «Дата новум»</Company>
     <Copyright>© ООО «Дата новум», datanovum.ru</Copyright>
     <Description>Сохранение нужных файлов с диска перед форматированием</Description>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
+    <NeutralLanguage>en</NeutralLanguage>
+    <!-- В exe попадают только наши языки, без локализаций .NET на десятки других. -->
+    <SatelliteResourceLanguages>en;ru</SatelliteResourceLanguages>
   </PropertyGroup>
 
 </Project>

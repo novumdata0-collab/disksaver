@@ -13,9 +13,9 @@ public sealed record DriveEntry(
     {
         get
         {
-            var label = string.IsNullOrWhiteSpace(Label) ? "Без метки" : Label;
-            var kind = Type == DriveType.Removable ? ", съёмный" : "";
-            var system = IsSystem ? " — СИСТЕМНЫЙ" : "";
+            var label = string.IsNullOrWhiteSpace(Label) ? CoreText.Get("DriveNoLabel") : Label;
+            var kind = Type == DriveType.Removable ? CoreText.Get("DriveRemovable") : "";
+            var system = IsSystem ? CoreText.Get("DriveSystem") : "";
             return $"{Root}  {label}  ({SizeFormatter.Format(TotalSize)}, {Format}{kind}){system}";
         }
     }

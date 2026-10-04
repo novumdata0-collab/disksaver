@@ -11,7 +11,7 @@ public partial class AboutWindow : Window
     {
         InitializeComponent();
         var version = Assembly.GetExecutingAssembly().GetName().Version;
-        VersionText.Text = $"Версия {version?.ToString(3)}";
+        VersionText.Text = Localization.Loc.F("AboutVersion", version?.ToString(3) ?? "");
     }
 
     private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

@@ -113,7 +113,7 @@ public sealed class CopyEngine
                 {
                     errors++;
                     results.Add(new CopyResult(file, destination, CopyStatus.VerifyFailed, hash,
-                        "Копия не совпадает с оригиналом"));
+                        CoreText.Get("VerifyMismatch")));
                     continue;
                 }
 
@@ -122,7 +122,7 @@ public sealed class CopyEngine
             catch (OperationCanceledException)
             {
                 TryDelete(destination);
-                results.Add(new CopyResult(file, null, CopyStatus.Cancelled, null, "Отменено"));
+                results.Add(new CopyResult(file, null, CopyStatus.Cancelled, null, CoreText.Get("Cancelled")));
                 cancelled = true;
                 break;
             }
@@ -149,9 +149,8 @@ public sealed class CopyEngine
             return;
         var drive = new DriveInfo(root);
         if (drive.IsReady && drive.AvailableFreeSpace < bytesNeeded)
-            throw new IOException(
-                $"Недостаточно места на {root}: нужно {SizeFormatter.Format(bytesNeeded)}, " +
-                $"свободно {SizeFormatter.Format(drive.AvailableFreeSpace)}.");
+            throw new IOException(CoreText.Format("NotEnoughSpace", root,
+                SizeFormatter.Format(bytesNeeded), SizeFormatter.Format(drive.AvailableFreeSpace)));
     }
 
     internal static string ReserveDestination(string outputFolder, FoundFile file, CopyLayout layout)
@@ -232,7 +231,7 @@ public sealed class CopyEngine
     {
         // «;» и UTF-8 с BOM — чтобы русский Excel открыл файл без настроек.
         var sb = new StringBuilder();
-        sb.AppendLine("Статус;Категория;Источник;Копия;Размер;Изменён;MD5;Ошибка");
+        sb.AppendLine(CoreText.Get("ManifestHeader"));
         foreach (var r in report.Results)
         {
             sb.AppendJoin(';',

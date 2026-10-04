@@ -1,4 +1,5 @@
 using DiskSaver.Core;
+using DiskSaver.Localization;
 
 namespace DiskSaver.ViewModels;
 
@@ -13,6 +14,7 @@ public sealed class FileItemViewModel(FoundFile model, Action onSelectionChanged
     public long Size => Model.Size;
     public string SizeText => SizeFormatter.Format(Model.Size);
     public DateTime Modified => Model.ModifiedUtc.ToLocalTime();
+    public string ModifiedText => Modified.ToString(Loc.T("DateFormat"));
 
     public bool IsSelected
     {
@@ -31,5 +33,13 @@ public sealed class FileItemViewModel(FoundFile model, Action onSelectionChanged
             return;
         _isSelected = value;
         OnPropertyChanged(nameof(IsSelected));
+    }
+
+    /// <summary>После смены языка: категория, единицы размера и формат даты.</summary>
+    public void RefreshTexts()
+    {
+        OnPropertyChanged(nameof(CategoryName));
+        OnPropertyChanged(nameof(SizeText));
+        OnPropertyChanged(nameof(ModifiedText));
     }
 }

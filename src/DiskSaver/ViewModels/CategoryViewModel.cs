@@ -1,4 +1,5 @@
 using DiskSaver.Core;
+using DiskSaver.Localization;
 
 namespace DiskSaver.ViewModels;
 
@@ -10,11 +11,11 @@ public sealed class CategoryViewModel(FileCategory? category, Action<CategoryVie
     private int _selectedCount;
 
     public FileCategory? Category { get; } = category;
-    public string Name => Category?.Name ?? "Все файлы";
+    public string Name => Category?.Name ?? Loc.T("AllFiles");
 
     public string Details => _count == 0
         ? "—"
-        : $"{_count:N0} · {SizeFormatter.Format(_bytes)}" + (_selectedCount == _count ? "" : $" · выбрано {_selectedCount:N0}");
+        : $"{_count:N0} · {SizeFormatter.Format(_bytes)}" + (_selectedCount == _count ? "" : Loc.F("CategorySelectedPart", _selectedCount.ToString("N0")));
 
     /// <summary>true — выбраны все, false — ни одного, null — часть.</summary>
     public bool? IsChecked
@@ -36,5 +37,11 @@ public sealed class CategoryViewModel(FileCategory? category, Action<CategoryVie
         _selectedCount = selectedCount;
         OnPropertyChanged(nameof(Details));
         OnPropertyChanged(nameof(IsChecked));
+    }
+
+    public void RefreshTexts()
+    {
+        OnPropertyChanged(nameof(Name));
+        OnPropertyChanged(nameof(Details));
     }
 }

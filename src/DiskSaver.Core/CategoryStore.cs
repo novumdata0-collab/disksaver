@@ -8,6 +8,7 @@ public static class CategoryStore
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
     };
 
@@ -26,10 +27,9 @@ public static class CategoryStore
                 return CategoryCatalog.CreateDefault();
             var dtos = JsonSerializer.Deserialize<List<CategoryDto>>(File.ReadAllText(path), JsonOptions);
             var categories = dtos?
-                .Where(d => !string.IsNullOrWhiteSpace(d.Name) && d.Extensions.Count > 0)
-                .Select(d => new FileCategory(
-                    string.IsNullOrWhiteSpace(d.Key) ? NewKey() : d.Key,
-                    d.Name.Trim(), d.CopyPriority, d.Extensions, Math.Max(0, d.MinSizeBytes), d.GroupByYear))
+                .Where(d => d.Extensions.Count > 0)
+                .Select(FromDto)
+                .OfType<FileCategory>()
                 .ToList();
             return categories is { Count: > 0 } ? new CategoryCatalog(categories) : CategoryCatalog.CreateDefault();
         }
@@ -46,7 +46,7 @@ public static class CategoryStore
         var dtos = catalog.Categories.Select(c => new CategoryDto
         {
             Key = c.Key,
-            Name = c.Name,
+            Name = c.CustomName,
             CopyPriority = c.CopyPriority,
             MinSizeBytes = c.MinSizeBytes,
             GroupByYear = c.GroupByYear,
@@ -88,10 +88,27 @@ public static class CategoryStore
 
     public static string NewKey() => "custom-" + Guid.NewGuid().ToString("N")[..8];
 
+    /// <summary>
+    /// Название, которое нужно сохранить как пользовательское: null, если это стандартное название
+    /// стандартной категории (тогда оно будет переводиться при смене языка).
+    /// </summary>
+    public static string? ToCustomName(string key, string name) =>
+        CoreText.BuiltInCategoryName(key) is not null && CoreText.IsBuiltInCategoryName(key, name) ? null : name.Trim();
+
+    private static FileCategory? FromDto(CategoryDto d)
+    {
+        var key = string.IsNullOrWhiteSpace(d.Key) ? NewKey() : d.Key;
+        var name = string.IsNullOrWhiteSpace(d.Name) ? null : ToCustomName(key, d.Name);
+        // Без названия допустимы только стандартные категории.
+        if (name is null && CoreText.BuiltInCategoryName(key) is null)
+            return null;
+        return new FileCategory(key, name, d.CopyPriority, d.Extensions, Math.Max(0, d.MinSizeBytes), d.GroupByYear);
+    }
+
     private sealed class CategoryDto
     {
         public string Key { get; set; } = "";
-        public string Name { get; set; } = "";
+        public string? Name { get; set; }
         public int CopyPriority { get; set; }
         public long MinSizeBytes { get; set; }
         public bool GroupByYear { get; set; }

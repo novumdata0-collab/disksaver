@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>DiskSaver — save files before formatting</value>
+  </data>
+  <data name="MenuFile" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="MenuExit" xml:space="preserve">
+    <value>E_xit</value>
+  </data>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Settings</value>
+  </data>
+  <data name="MenuExtensions" xml:space="preserve">
+    <value>File _extensions…</value>
+  </data>
+  <data name="MenuLanguage" xml:space="preserve">
+    <value>_Language</value>
+  </data>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>_Help</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>_About</value>
+  </data>
+  <data name="DriveLabel" xml:space="preserve">
+    <value>Drive:</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>⟳ Refresh</value>
+  </data>
+  <data name="RefreshTip" xml:space="preserve">
+    <value>Refresh the drive list</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="SearchTip" xml:space="preserve">
+    <value>Search by name and path</value>
+  </data>
+  <data name="CategoryCheckTip" xml:space="preserve">
+    <value>Check or uncheck all files in this category</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="ShowInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+  <data name="ColName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ColFolder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="ColCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ColSize" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="ColModified" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>yyyy-MM-dd HH:mm</value>
+  </data>
+  <data name="SelectVisible" xml:space="preserve">
+    <value>Check all in list</value>
+  </data>
+  <data name="UnselectVisible" xml:space="preserve">
+    <value>Uncheck all in list</value>
+  </data>
+  <data name="DestinationHeader" xml:space="preserve">
+    <value>Archive destination</value>
+  </data>
+  <data name="DestinationTip" xml:space="preserve">
+    <value>Folder on another drive</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="LayoutPreserve" xml:space="preserve">
+    <value>Keep folder structure</value>
+  </data>
+  <data name="LayoutByCategory" xml:space="preserve">
+    <value>Sort by category (photos/videos by year)</value>
+  </data>
+  <data name="CopySelected" xml:space="preserve">
+    <value>Copy selected →</value>
+  </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="CategorySelectedPart" xml:space="preserve">
+    <value> · selected {0}</value>
+  </data>
+  <data name="StatusInitial" xml:space="preserve">
+    <value>Choose a drive and click “Scan”.</value>
+  </data>
+  <data name="PlaceholderScanning" xml:space="preserve">
+    <value>Scanning… The list appears when the scan finishes; the counters on the left update as it goes.</value>
+  </data>
+  <data name="PlaceholderEmpty" xml:space="preserve">
+    <value>Choose a drive above and click “Scan”.</value>
+  </data>
+  <data name="PlaceholderNoMatch" xml:space="preserve">
+    <value>No files match the filter.</value>
+  </data>
+  <data name="CatalogSaved" xml:space="preserve">
+    <value>File extensions saved.</value>
+  </data>
+  <data name="CatalogSavedRescan" xml:space="preserve">
+    <value> Scan the drive again to find files with the new extensions.</value>
+  </data>
+  <data name="NewDriveConnected" xml:space="preserve">
+    <value>Drive {0} connected. Click “Scan”.</value>
+  </data>
+  <data name="DriveUnavailable" xml:space="preserve">
+    <value>Drive {0} is not available. It may have been disconnected.</value>
+  </data>
+  <data name="ScanProgress" xml:space="preserve">
+    <value>Scanning {0}… {1} files found, {2} folders checked</value>
+  </data>
+  <data name="ScanDone" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="ScanStopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="ScanError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ScanFailed" xml:space="preserve">
+    <value>Scan interrupted: {0}</value>
+  </data>
+  <data name="ScanSummary" xml:space="preserve">
+    <value>{0} in {1}: {2} files, {3}{4}.</value>
+  </data>
+  <data name="ScanUnreadable" xml:space="preserve">
+    <value>, unreadable folders: {0}</value>
+  </data>
+  <data name="DestinationMissing" xml:space="preserve">
+    <value>Choose an existing folder on the archive drive.</value>
+  </data>
+  <data name="DestinationSameDrive" xml:space="preserve">
+    <value>The archive can't be saved to the drive you are going to format.</value>
+  </data>
+  <data name="CopyProgress" xml:space="preserve">
+    <value>Copying {0} of {1} · {2} of {3}</value>
+  </data>
+  <data name="CopyProgressErrors" xml:space="preserve">
+    <value> · errors: {0}</value>
+  </data>
+  <data name="CopyNotStarted" xml:space="preserve">
+    <value>Copying did not start.</value>
+  </data>
+  <data name="CopyStatusDone" xml:space="preserve">
+    <value>Copied {0} of {1}</value>
+  </data>
+  <data name="CopyStatusFailed" xml:space="preserve">
+    <value>, with errors: {0}</value>
+  </data>
+  <data name="CopyStatusCancelled" xml:space="preserve">
+    <value> (stopped)</value>
+  </data>
+  <data name="CopyStatusArchive" xml:space="preserve">
+    <value>. Archive: {0}</value>
+  </data>
+  <data name="CopyResultOk" xml:space="preserve">
+    <value>All files ({0}) were copied and verified.</value>
+  </data>
+  <data name="CopyResultPartial" xml:space="preserve">
+    <value>Copied: {0}
+Errors: {1}</value>
+  </data>
+  <data name="CopyResultCancelled" xml:space="preserve">
+    <value>
+Copying was stopped.</value>
+  </data>
+  <data name="CopyResultErrorLog" xml:space="preserve">
+    <value>
+Error list: {0}</value>
+  </data>
+  <data name="CopyResultDontFormat" xml:space="preserve">
+    <value>
+
+Do NOT format the drive until you have dealt with the errors.</value>
+  </data>
+  <data name="CopyResultOpenFolder" xml:space="preserve">
+    <value>Archive folder:
+{0}
+
+Open it?</value>
+  </data>
+  <data name="CopyResultTitle" xml:space="preserve">
+    <value>DiskSaver — copy summary</value>
+  </data>
+  <data name="BrowseTitle" xml:space="preserve">
+    <value>Where to save the archive</value>
+  </data>
+  <data name="SelectionSummary" xml:space="preserve">
+    <value>Selected for copying: {0} files, {1}</value>
+  </data>
+  <data name="OpenFileFailed" xml:space="preserve">
+    <value>Couldn't open the file: {0}</value>
+  </data>
+  <data name="ExitWhileCopying" xml:space="preserve">
+    <value>Copying is in progress. Stop and exit?</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Unexpected error:
+{0}</value>
+  </data>
+  <data name="CatTitle" xml:space="preserve">
+    <value>File extensions</value>
+  </data>
+  <data name="CatHint" xml:space="preserve">
+    <value>Pick a category on the left to edit its extensions, or add your own category. Changes apply after “Save”.</value>
+  </data>
+  <data name="CatAdd" xml:space="preserve">
+    <value>+ Add</value>
+  </data>
+  <data name="CatRemove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="CatName" xml:space="preserve">
+    <value>Category name:</value>
+  </data>
+  <data name="CatExtensions" xml:space="preserve">
+    <value>Extensions (separated by commas or spaces, the dot is optional):</value>
+  </data>
+  <data name="CatMinSize" xml:space="preserve">
+    <value>Skip files smaller than, KB:</value>
+  </data>
+  <data name="CatMinSizeTip" xml:space="preserve">
+    <value>0 — include all files. For photos about 30 KB helps skip icons.</value>
+  </data>
+  <data name="CatGroupByYear" xml:space="preserve">
+    <value>Split by year when sorting by category</value>
+  </data>
+  <data name="CatReset" xml:space="preserve">
+    <value>Reset to defaults</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CatNew" xml:space="preserve">
+    <value>New category</value>
+  </data>
+  <data name="CatConfirmRemove" xml:space="preserve">
+    <value>Remove the category “{0}”?</value>
+  </data>
+  <data name="CatConfirmReset" xml:space="preserve">
+    <value>Restore the default categories and extensions? Your changes will be lost.</value>
+  </data>
+  <data name="CatErrName" xml:space="preserve">
+    <value>Enter a category name.</value>
+  </data>
+  <data name="CatErrDuplicateName" xml:space="preserve">
+    <value>The category “{0}” appears twice.</value>
+  </data>
+  <data name="CatErrInvalidExt" xml:space="preserve">
+    <value>Unrecognized extensions: {0}.
+Use letters and digits, for example: docx, pdf.</value>
+  </data>
+  <data name="CatErrNoExt" xml:space="preserve">
+    <value>Add at least one extension.</value>
+  </data>
+  <data name="CatErrMinSize" xml:space="preserve">
+    <value>The minimum size must be a whole number of KB, 0 or more.</value>
+  </data>
+  <data name="CatErrDuplicateExt" xml:space="preserve">
+    <value>The extension {0} is already in the category “{1}”.</value>
+  </data>
+  <data name="CatErrTitle" xml:space="preserve">
+    <value>Category “{0}”</value>
+  </data>
+  <data name="CatUnnamed" xml:space="preserve">
+    <value>unnamed</value>
+  </data>
+  <data name="CatErrNone" xml:space="preserve">
+    <value>At least one category is required.</value>
+  </data>
+  <data name="CatSaveFailed" xml:space="preserve">
+    <value>Couldn't save the settings: {0}</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutVersion" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>Quickly finds documents, spreadsheets, photos and other important files on a connected drive and saves them to an archive before formatting.</value>
+  </data>
+  <data name="AboutDeveloper" xml:space="preserve">
+    <value>Developer:</value>
+  </data>
+  <data name="AboutCompany" xml:space="preserve">
+    <value>Data Novum LLC</value>
+  </data>
+  <data name="AboutLicense" xml:space="preserve">
+    <value>Free and open source software, MIT license</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+</root>

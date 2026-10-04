@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:DiskSaver.ViewModels"
+        xmlns:loc="clr-namespace:DiskSaver.Localization"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
-        Title="DiskSaver — сохранение файлов перед форматированием"
+        Title="{loc:L AppTitle}"
         Width="1150" Height="720" MinWidth="800" MinHeight="500"
         WindowStartupLocation="CenterScreen"
         FontSize="13">
@@ -20,165 +21,169 @@
     </Window.Resources>
 
     <DockPanel>
-    <Menu DockPanel.Dock="Top" Padding="4,2">
-        <MenuItem Header="_Файл">
-            <MenuItem Header="_Выход" Click="Exit_Click" />
-        </MenuItem>
-        <MenuItem Header="_Настройки">
-            <MenuItem Header="_Расширения файлов…" Click="Categories_Click"
-                      IsEnabled="{Binding IsBusy, Converter={x:Static vm:InverseBool.Instance}}" />
-        </MenuItem>
-        <MenuItem Header="_Справка">
-            <MenuItem Header="_О программе" Click="About_Click" />
-        </MenuItem>
-    </Menu>
+        <Menu DockPanel.Dock="Top" Padding="4,2">
+            <MenuItem Header="{loc:L MenuFile}">
+                <MenuItem Header="{loc:L MenuExit}" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="{loc:L MenuSettings}">
+                <MenuItem Header="{loc:L MenuExtensions}" Click="Categories_Click"
+                          IsEnabled="{Binding IsBusy, Converter={x:Static vm:InverseBool.Instance}}" />
+                <MenuItem Header="{loc:L MenuLanguage}">
+                    <MenuItem x:Name="LanguageEnglish" Header="English" Tag="en" IsCheckable="True" Click="Language_Click" />
+                    <MenuItem x:Name="LanguageRussian" Header="Русский" Tag="ru" IsCheckable="True" Click="Language_Click" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{loc:L MenuHelp}">
+                <MenuItem Header="{loc:L MenuAbout}" Click="About_Click" />
+            </MenuItem>
+        </Menu>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Выбор диска -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,10" LastChildFill="False">
-            <TextBlock DockPanel.Dock="Left" Text="Диск:" VerticalAlignment="Center" FontWeight="SemiBold" />
-            <ComboBox DockPanel.Dock="Left" Width="460" Margin="8,0,4,0" VerticalContentAlignment="Center"
-                      ItemsSource="{Binding Drives}" SelectedItem="{Binding SelectedDrive}"
-                      DisplayMemberPath="Display" IsEnabled="{Binding IsBusy, Converter={x:Static vm:InverseBool.Instance}}" />
-            <Button DockPanel.Dock="Left" Content="⟳ Обновить" Command="{Binding RefreshDrivesCommand}"
-                    ToolTip="Обновить список дисков" />
-            <Button DockPanel.Dock="Left" Content="Сканировать" FontWeight="SemiBold" Command="{Binding ScanCommand}" />
-            <Button DockPanel.Dock="Left" Content="Стоп" Command="{Binding CancelCommand}" />
+            <!-- Выбор диска -->
+            <DockPanel Grid.Row="0" Margin="0,0,0,10" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Text="{loc:L DriveLabel}" VerticalAlignment="Center" FontWeight="SemiBold" />
+                <ComboBox DockPanel.Dock="Left" Width="460" Margin="8,0,4,0" VerticalContentAlignment="Center"
+                          ItemsSource="{Binding Drives}" SelectedItem="{Binding SelectedDrive}"
+                          DisplayMemberPath="Display" IsEnabled="{Binding IsBusy, Converter={x:Static vm:InverseBool.Instance}}" />
+                <Button DockPanel.Dock="Left" Content="{loc:L Refresh}" Command="{Binding RefreshDrivesCommand}"
+                        ToolTip="{loc:L RefreshTip}" />
+                <Button DockPanel.Dock="Left" Content="{loc:L Scan}" FontWeight="SemiBold" Command="{Binding ScanCommand}" />
+                <Button DockPanel.Dock="Left" Content="{loc:L Stop}" Command="{Binding CancelCommand}" />
 
-            <TextBox DockPanel.Dock="Right" Width="240" VerticalContentAlignment="Center"
-                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
-                     ToolTip="Поиск по имени и пути" />
-            <TextBlock DockPanel.Dock="Right" Text="Поиск:" VerticalAlignment="Center" Margin="0,0,6,0" />
-        </DockPanel>
+                <TextBox DockPanel.Dock="Right" Width="240" VerticalContentAlignment="Center"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged, Delay=300}"
+                         ToolTip="{loc:L SearchTip}" />
+                <TextBlock DockPanel.Dock="Right" Text="{loc:L Search}" VerticalAlignment="Center" Margin="0,0,6,0" />
+            </DockPanel>
 
-        <!-- Категории и файлы -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250" MinWidth="180" />
-                <ColumnDefinition Width="6" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <ListBox Grid.Column="0" ItemsSource="{Binding Categories}"
-                     SelectedItem="{Binding SelectedCategory}"
-                     HorizontalContentAlignment="Stretch">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="vm:CategoryViewModel">
-                        <DockPanel Margin="2,5">
-                            <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,8,0"
-                                      IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                      ToolTip="Отметить или снять все файлы категории" />
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
-                                <TextBlock Text="{Binding Details}" Foreground="Gray" FontSize="12" />
-                            </StackPanel>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-
-            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Transparent" />
-
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <DataGrid x:Name="FilesGrid" Grid.Row="0" ItemsSource="{Binding VisibleFiles}"
-                          AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
-                          SelectionMode="Extended" HeadersVisibility="Column" GridLinesVisibility="None"
-                          AlternatingRowBackground="#F6F7F9" RowHeight="24"
-                          EnableRowVirtualization="True" EnableColumnVirtualization="True"
-                          VirtualizingPanel.VirtualizationMode="Recycling"
-                          VirtualizingPanel.IsVirtualizing="True">
-                    <DataGrid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowInExplorerCommand}"
-                                      CommandParameter="{Binding SelectedItem, ElementName=FilesGrid}" />
-                    </DataGrid.InputBindings>
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Открыть файл" Command="{Binding OpenFileCommand}"
-                                      CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-                            <MenuItem Header="Показать в проводнике" Command="{Binding ShowInExplorerCommand}"
-                                      CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                    <DataGrid.Columns>
-                        <DataGridTemplateColumn Width="34" SortMemberPath="IsSelected">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="2*" />
-                        <DataGridTextColumn Header="Папка" Binding="{Binding Folder}" Width="3*" />
-                        <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" Width="100" />
-                        <DataGridTextColumn Header="Размер" Binding="{Binding SizeText}" SortMemberPath="Size" Width="90">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Изменён" Binding="{Binding Modified, StringFormat=dd.MM.yyyy HH:mm}" Width="140" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <TextBlock Grid.Row="0" Text="{Binding PlaceholderText}" Foreground="Gray" FontSize="14"
-                           HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
-                           MaxWidth="420" TextAlignment="Center" IsHitTestVisible="False"
-                           Visibility="{Binding ShowPlaceholder, Converter={StaticResource BoolToVisibility}}" />
-
-                <DockPanel Grid.Row="1" Margin="0,8,0,0" LastChildFill="False">
-                    <Button DockPanel.Dock="Left" Margin="0,0,4,0" Content="Отметить все в списке"
-                            Command="{Binding SelectVisibleCommand}" />
-                    <Button DockPanel.Dock="Left" Content="Снять все в списке" Command="{Binding UnselectVisibleCommand}" />
-                    <TextBlock DockPanel.Dock="Right" Text="{Binding SelectionSummary}"
-                               VerticalAlignment="Center" FontWeight="SemiBold" />
-                </DockPanel>
-            </Grid>
-        </Grid>
-
-        <!-- Куда копировать -->
-        <GroupBox Grid.Row="2" Header="Куда сохранить архив" Margin="0,10,0,0" Padding="8">
-            <Grid>
+            <!-- Категории и файлы -->
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250" MinWidth="180" />
+                    <ColumnDefinition Width="6" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalContentAlignment="Center" MinHeight="28"
-                         Text="{Binding DestinationPath, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="Папка на другом диске" />
-                <Button Grid.Column="1" Content="Обзор…" Command="{Binding BrowseDestinationCommand}" />
-                <StackPanel Grid.Column="2" Margin="12,0" VerticalAlignment="Center">
-                    <RadioButton Content="Сохранить структуру папок" IsChecked="{Binding PreserveStructure}" />
-                    <RadioButton Content="Разложить по категориям (фото/видео по годам)" IsChecked="{Binding ByCategory}" Margin="0,3,0,0" />
-                </StackPanel>
-                <Button Grid.Column="3" Content="Копировать выбранное →" FontWeight="SemiBold"
-                        Padding="18,6" Command="{Binding CopyCommand}" />
-            </Grid>
-        </GroupBox>
 
-        <!-- Статус -->
-        <DockPanel Grid.Row="3" Margin="0,10,0,0">
-            <ProgressBar DockPanel.Dock="Left" Width="220" Height="16"
-                         Value="{Binding ProgressValue, Mode=OneWay}"
-                         IsIndeterminate="{Binding ProgressIndeterminate}" />
-            <TextBlock Text="{Binding StatusText}" Margin="10,0,0,0" VerticalAlignment="Center"
-                       TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusText}" />
-        </DockPanel>
-    </Grid>
+                <ListBox Grid.Column="0" ItemsSource="{Binding Categories}"
+                         SelectedItem="{Binding SelectedCategory}"
+                         HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:CategoryViewModel">
+                            <DockPanel Margin="2,5">
+                                <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0,0,8,0"
+                                          IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                          ToolTip="{loc:L CategoryCheckTip}" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Details}" Foreground="Gray" FontSize="12" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Transparent" />
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <DataGrid x:Name="FilesGrid" Grid.Row="0" ItemsSource="{Binding VisibleFiles}"
+                              AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                              SelectionMode="Extended" HeadersVisibility="Column" GridLinesVisibility="None"
+                              AlternatingRowBackground="#F6F7F9" RowHeight="24"
+                              EnableRowVirtualization="True" EnableColumnVirtualization="True"
+                              VirtualizingPanel.VirtualizationMode="Recycling"
+                              VirtualizingPanel.IsVirtualizing="True">
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ShowInExplorerCommand}"
+                                          CommandParameter="{Binding SelectedItem, ElementName=FilesGrid}" />
+                        </DataGrid.InputBindings>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{loc:L OpenFile}" Command="{Binding OpenFileCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                                <MenuItem Header="{loc:L ShowInExplorer}" Command="{Binding ShowInExplorerCommand}"
+                                          CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="34" SortMemberPath="IsSelected">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="{loc:L ColName}" Binding="{Binding Name}" Width="2*" />
+                            <DataGridTextColumn Header="{loc:L ColFolder}" Binding="{Binding Folder}" Width="3*" />
+                            <DataGridTextColumn Header="{loc:L ColCategory}" Binding="{Binding CategoryName}" Width="110" />
+                            <DataGridTextColumn Header="{loc:L ColSize}" Binding="{Binding SizeText}" SortMemberPath="Size" Width="90">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right" />
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{loc:L ColModified}" Binding="{Binding ModifiedText}" SortMemberPath="Modified" Width="140" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="0" Text="{Binding PlaceholderText}" Foreground="Gray" FontSize="14"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"
+                               MaxWidth="420" TextAlignment="Center" IsHitTestVisible="False"
+                               Visibility="{Binding ShowPlaceholder, Converter={StaticResource BoolToVisibility}}" />
+
+                    <DockPanel Grid.Row="1" Margin="0,8,0,0" LastChildFill="False">
+                        <Button DockPanel.Dock="Left" Margin="0,0,4,0" Content="{loc:L SelectVisible}"
+                                Command="{Binding SelectVisibleCommand}" />
+                        <Button DockPanel.Dock="Left" Content="{loc:L UnselectVisible}" Command="{Binding UnselectVisibleCommand}" />
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding SelectionSummary}"
+                                   VerticalAlignment="Center" FontWeight="SemiBold" />
+                    </DockPanel>
+                </Grid>
+            </Grid>
+
+            <!-- Куда копировать -->
+            <GroupBox Grid.Row="2" Header="{loc:L DestinationHeader}" Margin="0,10,0,0" Padding="8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" VerticalContentAlignment="Center" MinHeight="28"
+                             Text="{Binding DestinationPath, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="{loc:L DestinationTip}" />
+                    <Button Grid.Column="1" Content="{loc:L Browse}" Command="{Binding BrowseDestinationCommand}" />
+                    <StackPanel Grid.Column="2" Margin="12,0" VerticalAlignment="Center">
+                        <RadioButton Content="{loc:L LayoutPreserve}" IsChecked="{Binding PreserveStructure}" />
+                        <RadioButton Content="{loc:L LayoutByCategory}" IsChecked="{Binding ByCategory}" Margin="0,3,0,0" />
+                    </StackPanel>
+                    <Button Grid.Column="3" Content="{loc:L CopySelected}" FontWeight="SemiBold"
+                            Padding="18,6" Command="{Binding CopyCommand}" />
+                </Grid>
+            </GroupBox>
+
+            <!-- Статус -->
+            <DockPanel Grid.Row="3" Margin="0,10,0,0">
+                <ProgressBar DockPanel.Dock="Left" Width="220" Height="16"
+                             Value="{Binding ProgressValue, Mode=OneWay}"
+                             IsIndeterminate="{Binding ProgressIndeterminate}" />
+                <TextBlock Text="{Binding StatusText}" Margin="10,0,0,0" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" ToolTip="{Binding StatusText}" />
+            </DockPanel>
+        </Grid>
     </DockPanel>
 </Window>

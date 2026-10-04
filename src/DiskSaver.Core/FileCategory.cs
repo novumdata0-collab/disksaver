@@ -3,11 +3,12 @@ namespace DiskSaver.Core;
 /// <summary>Группа файлов, которые ищем на диске (документы, фото и т.д.).</summary>
 public sealed class FileCategory
 {
-    public FileCategory(string key, string name, int copyPriority, IEnumerable<string> extensions,
+    /// <param name="customName">Название, заданное пользователем. null — стандартное название на текущем языке.</param>
+    public FileCategory(string key, string? customName, int copyPriority, IEnumerable<string> extensions,
         long minSizeBytes = 0, bool groupByYear = false)
     {
         Key = key;
-        Name = name;
+        CustomName = string.IsNullOrWhiteSpace(customName) ? null : customName.Trim();
         CopyPriority = copyPriority;
         MinSizeBytes = minSizeBytes;
         GroupByYear = groupByYear;
@@ -15,7 +16,11 @@ public sealed class FileCategory
     }
 
     public string Key { get; }
-    public string Name { get; }
+
+    public string? CustomName { get; }
+
+    /// <summary>Отображаемое название: пользовательское или стандартное на текущем языке.</summary>
+    public string Name => CustomName ?? CoreText.BuiltInCategoryName(Key) ?? Key;
 
     /// <summary>Меньше — копируется раньше. Мелкие ценные файлы идут первыми на случай, если диск умирает.</summary>
     public int CopyPriority { get; }

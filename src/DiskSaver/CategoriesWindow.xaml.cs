@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using DiskSaver.Core;
+using DiskSaver.Localization;
 using DiskSaver.ViewModels;
 
 namespace DiskSaver;
@@ -32,7 +33,7 @@ public partial class CategoriesWindow : Window
     {
         if (CategoryList.SelectedItem is not CategoryEditItem item)
             return;
-        if (MessageBox.Show($"Удалить категорию «{item.Name}»?", "Расширения файлов",
+        if (MessageBox.Show(Loc.F("CatConfirmRemove", item.Name), Loc.T("CatTitle"),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
             return;
         var index = _items.IndexOf(item);
@@ -42,8 +43,8 @@ public partial class CategoriesWindow : Window
 
     private void Reset_Click(object sender, RoutedEventArgs e)
     {
-        if (MessageBox.Show("Вернуть стандартные категории и расширения? Ваши изменения будут потеряны.",
-                "Расширения файлов", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+        if (MessageBox.Show(Loc.T("CatConfirmReset"), Loc.T("CatTitle"),
+                MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
             return;
         _items.Clear();
         foreach (var category in CategoryCatalog.CreateDefault().Categories)
@@ -64,33 +65,34 @@ public partial class CategoriesWindow : Window
             var extensions = CategoryStore.ParseExtensions(item.ExtensionsText, out var invalid);
 
             if (name.Length == 0)
-                error = "Укажите название категории.";
+                error = Loc.T("CatErrName");
             else if (!names.Add(name))
-                error = $"Категория «{name}» встречается дважды.";
+                error = Loc.F("CatErrDuplicateName", name);
             else if (invalid.Count > 0)
-                error = $"Непонятные расширения: {string.Join(", ", invalid)}.\nИспользуйте буквы и цифры, например: docx, pdf.";
+                error = Loc.F("CatErrInvalidExt", string.Join(", ", invalid));
             else if (extensions.Count == 0)
-                error = "Добавьте хотя бы одно расширение.";
+                error = Loc.T("CatErrNoExt");
             else if (!long.TryParse(item.MinSizeKbText.Trim(), out var kb) || kb < 0)
-                error = "Минимальный размер — целое число КБ, 0 или больше.";
+                error = Loc.T("CatErrMinSize");
             else
             {
                 var duplicate = extensions.FirstOrDefault(owners.ContainsKey);
                 if (duplicate is not null)
-                    error = $"Расширение {duplicate} уже есть в категории «{owners[duplicate]}».";
+                    error = Loc.F("CatErrDuplicateExt", duplicate, owners[duplicate]);
                 else
                 {
                     foreach (var ext in extensions)
                         owners[ext] = name;
-                    categories.Add(new FileCategory(item.Key, name, item.CopyPriority, extensions,
-                        kb * 1024, item.GroupByYear));
+                    // Стандартное название не сохраняем — оно будет переводиться вместе с интерфейсом.
+                    categories.Add(new FileCategory(item.Key, CategoryStore.ToCustomName(item.Key, name),
+                        item.CopyPriority, extensions, kb * 1024, item.GroupByYear));
                 }
             }
 
             if (error is not null)
             {
                 CategoryList.SelectedItem = item;
-                MessageBox.Show(error, $"Категория «{(name.Length > 0 ? name : "без названия")}»",
+                MessageBox.Show(error, Loc.F("CatErrTitle", name.Length > 0 ? name : Loc.T("CatUnnamed")),
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -98,7 +100,7 @@ public partial class CategoriesWindow : Window
 
         if (categories.Count == 0)
         {
-            MessageBox.Show("Нужна хотя бы одна категория.", "Расширения файлов",
+            MessageBox.Show(Loc.T("CatErrNone"), Loc.T("CatTitle"),
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -110,7 +112,7 @@ public partial class CategoriesWindow : Window
         }
         catch (Exception ex) when (ex is System.IO.IOException or UnauthorizedAccessException)
         {
-            MessageBox.Show($"Не удалось сохранить настройки: {ex.Message}", "Расширения файлов",
+            MessageBox.Show(Loc.F("CatSaveFailed", ex.Message), Loc.T("CatTitle"),
                 MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }

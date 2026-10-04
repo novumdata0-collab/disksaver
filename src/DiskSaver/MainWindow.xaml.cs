@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Interop;
+using DiskSaver.Localization;
 using DiskSaver.ViewModels;
 
 namespace DiskSaver;
@@ -18,6 +19,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         DataContext = _viewModel;
         _viewModel.NewDriveDetected += (_, _) => BringToFront();
+        UpdateLanguageMenu();
     }
 
     protected override void OnSourceInitialized(EventArgs e)
@@ -57,10 +59,24 @@ public partial class MainWindow : Window
             _viewModel.ApplyCatalog(window.Result);
     }
 
+private void Language_Click(object sender, RoutedEventArgs e)
+    {
+        var language = (string)((FrameworkElement)sender).Tag;
+        Loc.Instance.SetLanguage(language);
+        new AppSettings { Language = language }.Save();
+        UpdateLanguageMenu();
+    }
+
+    private void UpdateLanguageMenu()
+    {
+        LanguageEnglish.IsChecked = Loc.Instance.Language == "en";
+        LanguageRussian.IsChecked = Loc.Instance.Language == "ru";
+    }
+
     protected override void OnClosing(CancelEventArgs e)
     {
         if (_viewModel.IsCopying &&
-            MessageBox.Show("Идёт копирование. Прервать и выйти?", "DiskSaver",
+            MessageBox.Show(Loc.T("ExitWhileCopying"), "DiskSaver",
                 MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
         {
             e.Cancel = true;

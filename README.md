@@ -21,6 +21,7 @@
 - **Быстрое сканирование** — пропускаются системные папки (`Windows`, `Program Files`, корзина, кэши браузеров, временные файлы), повреждённые и недоступные папки не прерывают обход.
 - **Категории файлов** — документы, таблицы, презентации, фото (включая RAW), архивы, видео. Мелкие картинки (иконки, миниатюры) отсекаются.
 - **Свои расширения** — в меню *Настройки → Расширения файлов* можно менять расширения, добавлять и удалять категории.
+- **Русский и английский интерфейс** — переключается в меню *Настройки → Язык* на ходу, по умолчанию выбирается язык Windows.
 - **Удобный выбор** — счётчики и объём по категориям, галочки, поиск по имени и пути, сортировка, «показать в проводнике».
 - **Надёжное копирование**:
   - два режима — сохранить структуру папок или разложить по категориям (фото и видео — по годам);
@@ -50,7 +51,7 @@
 
 Архив создаётся в папке вида `<диск>_<метка>_<дата>`, например `E_Seagate_2026-10-04_1530`.
 
-Настройки категорий хранятся в `%APPDATA%\DiskSaver\categories.json`.
+Настройки хранятся в `%APPDATA%\DiskSaver\` (`categories.json`, `settings.json`).
 
 ### Сборка из исходников
 
@@ -73,6 +74,7 @@ dotnet publish src/DiskSaver -c Release -r win-x64 --self-contained true `
 ```
 src/DiskSaver.Core   — логика: категории, сканер диска, копирование с проверкой, список дисков
 src/DiskSaver        — интерфейс WPF (MVVM): главное окно, настройки расширений, «О программе»
+src/*/Resources       — строки интерфейса: *.resx (английский) и *.ru.resx (русский)
 PLAN.md              — план развития
 ```
 
@@ -83,6 +85,8 @@ PLAN.md              — план развития
 ### Участие в разработке
 
 Нашли ошибку или есть идея — создайте [Issue](https://github.com/novumdata0-collab/disksaver/issues/new/choose). Pull request'ы приветствуются. История изменений — в [CHANGELOG.md](CHANGELOG.md).
+
+**Перевод на другой язык:** скопируйте src/DiskSaver/Resources/Strings.ru.resx и src/DiskSaver.Core/Resources/CoreStrings.ru.resx с кодом своего языка (например, Strings.de.resx), переведите значения, добавьте код языка в Loc.SupportedLanguages и пункт в меню «Язык».
 
 ### Лицензия
 
@@ -96,6 +100,8 @@ PLAN.md              — план развития
 
 ## English
 
+![DiskSaver in English](docs/assets/screenshot-en.png)
+
 **DiskSaver** is a Windows application that quickly finds important files on a connected drive (HDD or SSD) — documents, spreadsheets, presentations, photos, videos, archives — and copies the ones you select to an archive on another drive. After that, the old drive can be safely formatted.
 
 ### Features
@@ -104,6 +110,7 @@ PLAN.md              — план развития
 - **Fast scanning** — system folders (`Windows`, `Program Files`, Recycle Bin, browser caches, temp files) are skipped; damaged or inaccessible folders do not stop the scan.
 - **File categories** — documents, spreadsheets, presentations, photos (including RAW), archives, videos. Tiny images (icons, thumbnails) are filtered out.
 - **Custom extensions** — use *Settings → File extensions* to edit extensions and add or remove categories.
+- **English and Russian UI** — switch any time under *Settings → Language*; the Windows language is used by default.
 - **Easy selection** — per-category counts and sizes, checkboxes, search by name and path, sorting, "show in Explorer".
 - **Reliable copying**:
   - two layouts — keep the original folder structure, or sort by category (photos and videos by year);
@@ -124,18 +131,16 @@ PLAN.md              — план развития
 
 ### Usage
 
-1. Connect the drive — it appears in the "Диск" (Drive) list at the top.
-2. Click **"Сканировать"** (Scan). The left panel shows how many files were found in each category.
+1. Connect the drive — it appears in the "Drive" list at the top.
+2. Click **Scan**. The left panel shows how many files were found in each category.
 3. Uncheck what you don't need — whole categories on the left or individual files in the table.
-4. Choose a folder on a **different** drive under "Куда сохранить архив" (Archive destination) and pick a layout.
-5. Click **"Копировать выбранное"** (Copy selected). When finished, the app shows a summary and offers to open the archive folder.
+4. Choose a folder on a **different** drive under "Archive destination" and pick a layout.
+5. Click **Copy selected**. When finished, the app shows a summary and offers to open the archive folder.
 6. Format the old drive only if copying finished **without errors**.
 
 The archive is created in a folder like `<drive>_<label>_<date>`, e.g. `E_Seagate_2026-10-04_1530`.
 
-Category settings are stored in `%APPDATA%\DiskSaver\categories.json`.
-
-> The user interface is currently in Russian.
+Settings are stored in `%APPDATA%\DiskSaver\` (`categories.json`, `settings.json`).
 
 ### Building from source
 
@@ -158,6 +163,7 @@ The output is `publish/DiskSaver.exe`.
 ```
 src/DiskSaver.Core   — core logic: categories, disk scanner, verified copying, drive list
 src/DiskSaver        — WPF UI (MVVM): main window, extension settings, About dialog
+src/*/Resources       — UI strings: *.resx (English) and *.ru.resx (Russian)
 PLAN.md              — development roadmap (in Russian)
 ```
 
@@ -168,6 +174,8 @@ System tray icon, remembering scanned drives (SQLite), pause/resume copying, ult
 ### Contributing
 
 Found a bug or have an idea? Open an [issue](https://github.com/novumdata0-collab/disksaver/issues/new/choose). Pull requests are welcome. See [CHANGELOG.md](CHANGELOG.md) for the release history.
+
+**Adding a language:** copy src/DiskSaver/Resources/Strings.ru.resx and src/DiskSaver.Core/Resources/CoreStrings.ru.resx with your language code (e.g. Strings.de.resx), translate the values, add the code to Loc.SupportedLanguages and an item to the Language menu.
 
 ### License
 

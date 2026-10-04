@@ -24,21 +24,22 @@ public sealed class CategoryCatalog
         return _byExtension.GetValueOrDefault(extension);
     }
 
+    /// <summary>Стандартные категории; названия берутся из ресурсов на текущем языке.</summary>
     public static CategoryCatalog CreateDefault() => new(
     [
-        new FileCategory("documents", "Документы", 0,
+        new FileCategory("documents", null, 0,
             ["doc", "docx", "docm", "odt", "rtf", "pdf", "txt", "djvu"]),
-        new FileCategory("spreadsheets", "Таблицы", 0,
+        new FileCategory("spreadsheets", null, 0,
             ["xls", "xlsx", "xlsm", "xlsb", "csv", "ods"]),
-        new FileCategory("presentations", "Презентации", 1,
+        new FileCategory("presentations", null, 1,
             ["ppt", "pptx", "pps", "ppsx", "odp"]),
-        new FileCategory("photos", "Фото", 2,
+        new FileCategory("photos", null, 2,
             ["jpg", "jpeg", "png", "heic", "heif", "bmp", "tif", "tiff", "webp", "gif",
              "cr2", "cr3", "nef", "arw", "dng", "orf", "rw2", "raf"],
             minSizeBytes: 30 * 1024, groupByYear: true),
-        new FileCategory("archives", "Архивы", 3,
+        new FileCategory("archives", null, 3,
             ["zip", "rar", "7z"]),
-        new FileCategory("video", "Видео", 4,
+        new FileCategory("video", null, 4,
             ["mp4", "mov", "avi", "mkv", "m4v", "3gp", "mts", "wmv"],
             minSizeBytes: 100 * 1024, groupByYear: true),
     ]);

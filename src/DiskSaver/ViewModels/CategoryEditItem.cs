@@ -1,4 +1,5 @@
 using DiskSaver.Core;
+using DiskSaver.Localization;
 
 namespace DiskSaver.ViewModels;
 
@@ -24,7 +25,7 @@ public sealed class CategoryEditItem : ObservableObject
     {
         Key = CategoryStore.NewKey();
         CopyPriority = 1;
-        _name = "Новая категория";
+        _name = Loc.T("CatNew");
         _extensionsText = "";
         _minSizeKbText = "0";
     }

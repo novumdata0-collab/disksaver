@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cat_documents" xml:space="preserve">
+    <value>Документы</value>
+  </data>
+  <data name="Cat_spreadsheets" xml:space="preserve">
+    <value>Таблицы</value>
+  </data>
+  <data name="Cat_presentations" xml:space="preserve">
+    <value>Презентации</value>
+  </data>
+  <data name="Cat_photos" xml:space="preserve">
+    <value>Фото</value>
+  </data>
+  <data name="Cat_archives" xml:space="preserve">
+    <value>Архивы</value>
+  </data>
+  <data name="Cat_video" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="NotEnoughSpace" xml:space="preserve">
+    <value>Недостаточно места на {0}: нужно {1}, свободно {2}.</value>
+  </data>
+  <data name="VerifyMismatch" xml:space="preserve">
+    <value>Копия не совпадает с оригиналом</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Отменено</value>
+  </data>
+  <data name="ManifestHeader" xml:space="preserve">
+    <value>Статус;Категория;Источник;Копия;Размер;Изменён;MD5;Ошибка</value>
+  </data>
+  <data name="DriveNoLabel" xml:space="preserve">
+    <value>Без метки</value>
+  </data>
+  <data name="DriveRemovable" xml:space="preserve">
+    <value>, съёмный</value>
+  </data>
+  <data name="DriveSystem" xml:space="preserve">
+    <value> — СИСТЕМНЫЙ</value>
+  </data>
+  <data name="SizeUnits" xml:space="preserve">
+    <value>Б,КБ,МБ,ГБ,ТБ</value>
+  </data>
+</root>

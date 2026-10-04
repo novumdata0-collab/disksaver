@@ -4,11 +4,24 @@
 
 ## [Unreleased]
 
+## [1.2.0] — 2026-10-04
+
 ### Добавлено / Added
+- Английский интерфейс; язык переключается на ходу в меню *Настройки → Язык*, по умолчанию — язык Windows.
+  / English UI; switch languages on the fly under *Settings → Language*, Windows language by default.
+- Названия стандартных категорий, единицы размеров, формат дат и заголовок `manifest.csv` тоже переводятся.
+  / Built-in category names, size units, date format and the `manifest.csv` header are localized too.
+- Ссылка на лицензию в окне «О программе». / License link in the About dialog.
 - Свободная лицензия MIT. / MIT license.
 - Сайт проекта на GitHub Pages. / Project website on GitHub Pages.
 - Шаблоны Issues для ошибок и предложений. / Issue templates for bugs and feature requests.
 - Описание для установки через winget. / winget manifest.
+
+### Изменено / Changed
+- Стандартные названия категорий больше не записываются в `categories.json`, поэтому меняются вместе с языком;
+  свои названия сохраняются. Настройки из версии 1.1.0 читаются без изменений.
+  / Built-in category names are no longer stored in `categories.json`, so they follow the UI language;
+  custom names are kept. Settings from 1.1.0 load as before.
 
 ## [1.1.0] — 2026-10-04
 
@@ -31,5 +44,6 @@
   / Drive list refreshes automatically when a drive is connected.
 - Окно «О программе». / About dialog.
 
-[Unreleased]: https://github.com/novumdata0-collab/disksaver/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/novumdata0-collab/disksaver/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/novumdata0-collab/disksaver/releases/tag/v1.2.0
 [1.1.0]: https://github.com/novumdata0-collab/disksaver/releases/tag/v1.1.0

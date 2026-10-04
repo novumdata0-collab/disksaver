@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using DiskSaver.Core;
+using DiskSaver.Localization;
 using Microsoft.Win32;
 
 namespace DiskSaver.ViewModels;
@@ -24,7 +25,8 @@ public sealed class MainViewModel : ObservableObject
     private CategoryViewModel? _selectedCategory;
     private IReadOnlyList<FileItemViewModel> _visibleFiles = [];
     private string _searchText = "";
-    private string _statusText = "Выберите диск и нажмите «Сканировать».";
+    // Статус хранится как функция, чтобы при смене языка пересобрать текст.
+    private Func<string> _status = () => Loc.T("StatusInitial");
     private string _selectionSummary = "";
     private string _destinationPath = "";
     private bool _preserveStructure = true;
@@ -58,6 +60,8 @@ public sealed class MainViewModel : ObservableObject
         RefreshDrives(announceNew: false);
         SelectedDrive = Drives.FirstOrDefault(d => !d.IsSystem) ?? Drives.FirstOrDefault();
         RecalculateStats();
+
+        Loc.Instance.LanguageChanged += (_, _) => OnLanguageChanged();
     }
 
     /// <summary>Подключён новый диск — окно стоит вывести на передний план.</summary>
@@ -106,11 +110,9 @@ public sealed class MainViewModel : ObservableObject
 
     public bool ShowPlaceholder => _visibleFiles.Count == 0;
 
-    public string PlaceholderText => IsScanning
-        ? "Идёт сканирование… Список появится после завершения, счётчики слева обновляются на ходу."
-        : _allFiles.Count == 0
-            ? "Выберите диск сверху и нажмите «Сканировать»."
-            : "Нет файлов, подходящих под фильтр.";
+    public string PlaceholderText => Loc.T(IsScanning
+        ? "PlaceholderScanning"
+        : _allFiles.Count == 0 ? "PlaceholderEmpty" : "PlaceholderNoMatch");
 
     public string SearchText
     {
@@ -122,11 +124,7 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
-    public string StatusText
-    {
-        get => _statusText;
-        private set => SetProperty(ref _statusText, value);
-    }
+    public string StatusText => _status();
 
     public string SelectionSummary
     {
@@ -225,8 +223,27 @@ public sealed class MainViewModel : ObservableObject
         OnPropertyChanged(nameof(SelectedCategory));
         RecalculateStats();
         ApplyFilter();
-        StatusText = "Расширения сохранены." +
-                     (hadResults ? " Чтобы найти файлы с новыми расширениями, просканируйте диск заново." : "");
+        SetStatus(() => Loc.T("CatalogSaved") + (hadResults ? Loc.T("CatalogSavedRescan") : ""));
+    }
+
+    private void SetStatus(Func<string> status)
+    {
+        _status = status;
+        OnPropertyChanged(nameof(StatusText));
+    }
+
+    private void OnLanguageChanged()
+    {
+        // Подписи дисков и названия категорий собираются в коде — пересобираем.
+        if (!IsBusy)
+            RefreshDrives(announceNew: false);
+        foreach (var row in Categories)
+            row.RefreshTexts();
+        foreach (var file in _allFiles)
+            file.RefreshTexts();
+        RecalculateStats();
+        OnPropertyChanged(nameof(PlaceholderText));
+        OnPropertyChanged(nameof(StatusText));
     }
 
     private void BuildCategoryRows()
@@ -262,7 +279,7 @@ public sealed class MainViewModel : ObservableObject
         {
             var drive = added[0];
             SelectedDrive = drives.First(d => d.Root == drive.Root);
-            StatusText = $"Подключён диск {drive.Display}. Нажмите «Сканировать».";
+            SetStatus(() => Loc.F("NewDriveConnected", drive.Display));
             NewDriveDetected?.Invoke(this, drive);
         }
     }
@@ -274,7 +291,7 @@ public sealed class MainViewModel : ObservableObject
             return;
         if (!Directory.Exists(drive.Root))
         {
-            MessageBox.Show($"Диск {drive.Root} недоступен. Возможно, его отключили.", "DiskSaver",
+            MessageBox.Show(Loc.F("DriveUnavailable", drive.Root), "DiskSaver",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             RefreshDrives(announceNew: false);
             return;
@@ -298,14 +315,15 @@ public sealed class MainViewModel : ObservableObject
             while (queue.TryDequeue(out var file))
                 _allFiles.Add(new FileItemViewModel(file, RecalculateStats));
             RecalculateStats();
-            StatusText = $"Сканирование {drive.Root}… найдено {_allFiles.Count:N0} файлов, " +
-                         $"просмотрено папок {scanner.Stats.Directories:N0}";
+            var found = _allFiles.Count;
+            var folders = scanner.Stats.Directories;
+            SetStatus(() => Loc.F("ScanProgress", drive.Root, found.ToString("N0"), folders.ToString("N0")));
         }
 
         var timer = new DispatcherTimer(TimeSpan.FromMilliseconds(300), DispatcherPriority.Background,
             (_, _) => Drain(), Dispatcher.CurrentDispatcher);
 
-        string result;
+        string resultKey;
         try
         {
             await Task.Run(() =>
@@ -313,16 +331,16 @@ public sealed class MainViewModel : ObservableObject
                 foreach (var file in scanner.Scan(drive.Root, token))
                     queue.Enqueue(file);
             });
-            result = "Готово";
+            resultKey = "ScanDone";
         }
         catch (OperationCanceledException)
         {
-            result = "Остановлено";
+            resultKey = "ScanStopped";
         }
         catch (Exception ex)
         {
-            result = "Ошибка";
-            MessageBox.Show($"Сканирование прервано: {ex.Message}", "DiskSaver",
+            resultKey = "ScanError";
+            MessageBox.Show(Loc.F("ScanFailed", ex.Message), "DiskSaver",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
@@ -334,10 +352,12 @@ public sealed class MainViewModel : ObservableObject
         }
 
         ApplyFilter();
+        var count = _allFiles.Count;
         var totalBytes = _allFiles.Sum(f => f.Size);
-        var errors = scanner.Stats.Errors > 0 ? $", папок не прочитано: {scanner.Stats.Errors:N0}" : "";
-        StatusText = $"{result} за {stopwatch.Elapsed:mm\\:ss}: {_allFiles.Count:N0} файлов, " +
-                     $"{SizeFormatter.Format(totalBytes)}{errors}.";
+        var errors = scanner.Stats.Errors;
+        var elapsed = stopwatch.Elapsed.ToString(@"mm\:ss");
+        SetStatus(() => Loc.F("ScanSummary", Loc.T(resultKey), elapsed, count.ToString("N0"),
+            SizeFormatter.Format(totalBytes), errors > 0 ? Loc.F("ScanUnreadable", errors.ToString("N0")) : ""));
     }
 
     private async Task CopyAsync()
@@ -348,13 +368,13 @@ public sealed class MainViewModel : ObservableObject
         var destination = DestinationPath.Trim();
         if (destination.Length == 0 || !Directory.Exists(destination))
         {
-            MessageBox.Show("Укажите существующую папку на диске-архиве.", "DiskSaver",
+            MessageBox.Show(Loc.T("DestinationMissing"), "DiskSaver",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
         if (DriveService.IsSameRoot(destination, _scannedDrive.Root))
         {
-            MessageBox.Show("Нельзя сохранять архив на тот же диск, который собираетесь форматировать.",
+            MessageBox.Show(Loc.T("DestinationSameDrive"),
                 "DiskSaver", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
@@ -369,10 +389,10 @@ public sealed class MainViewModel : ObservableObject
         var progress = new Progress<CopyProgress>(p =>
         {
             ProgressValue = p.BytesTotal == 0 ? 100 : p.BytesDone * 100.0 / p.BytesTotal;
-            StatusText = $"Копирование {p.FilesDone:N0} из {p.FilesTotal:N0} · " +
-                         $"{SizeFormatter.Format(p.BytesDone)} из {SizeFormatter.Format(p.BytesTotal)}" +
-                         (p.Errors > 0 ? $" · ошибок: {p.Errors}" : "") +
-                         (p.CurrentFile.Length > 0 ? $" · {p.CurrentFile}" : "");
+            SetStatus(() => Loc.F("CopyProgress", p.FilesDone.ToString("N0"), p.FilesTotal.ToString("N0"),
+                                SizeFormatter.Format(p.BytesDone), SizeFormatter.Format(p.BytesTotal)) +
+                            (p.Errors > 0 ? Loc.F("CopyProgressErrors", p.Errors) : "") +
+                            (p.CurrentFile.Length > 0 ? $" · {p.CurrentFile}" : ""));
         });
 
         CopyReport report;
@@ -384,7 +404,7 @@ public sealed class MainViewModel : ObservableObject
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            StatusText = "Копирование не начато.";
+            SetStatus(() => Loc.T("CopyNotStarted"));
             MessageBox.Show(ex.Message, "DiskSaver", MessageBoxButton.OK, MessageBoxImage.Error);
             return;
         }
@@ -393,26 +413,28 @@ public sealed class MainViewModel : ObservableObject
             IsCopying = false;
         }
 
-        StatusText = $"Скопировано {report.Copied:N0} из {files.Count:N0}" +
-                     (report.Failed > 0 ? $", с ошибками: {report.Failed:N0}" : "") +
-                     (report.Cancelled ? " (остановлено)" : "") + $". Архив: {report.OutputFolder}";
+        var total = files.Count;
+        SetStatus(() => Loc.F("CopyStatusDone", report.Copied.ToString("N0"), total.ToString("N0")) +
+                        (report.Failed > 0 ? Loc.F("CopyStatusFailed", report.Failed.ToString("N0")) : "") +
+                        (report.Cancelled ? Loc.T("CopyStatusCancelled") : "") +
+                        Loc.F("CopyStatusArchive", report.OutputFolder));
 
         var message = report.IsComplete
-            ? $"Все файлы ({report.Copied:N0}) скопированы и проверены.\n\n"
-            : $"Скопировано: {report.Copied:N0}\nОшибок: {report.Failed:N0}" +
-              (report.Cancelled ? "\nКопирование было остановлено." : "") +
-              (report.Failed > 0 ? $"\nСписок ошибок: {report.ErrorLogPath}" : "") +
-              "\n\nНЕ форматируйте диск, пока не разберётесь с ошибками.\n\n";
-        message += $"Папка архива:\n{report.OutputFolder}\n\nОткрыть её?";
+            ? Loc.F("CopyResultOk", report.Copied.ToString("N0")) + "\n\n"
+            : Loc.F("CopyResultPartial", report.Copied.ToString("N0"), report.Failed.ToString("N0")) +
+              (report.Cancelled ? Loc.T("CopyResultCancelled") : "") +
+              (report.Failed > 0 ? Loc.F("CopyResultErrorLog", report.ErrorLogPath) : "") +
+              Loc.T("CopyResultDontFormat") + "\n\n";
+        message += Loc.F("CopyResultOpenFolder", report.OutputFolder);
 
-        if (MessageBox.Show(message, "DiskSaver — итог копирования", MessageBoxButton.YesNo,
+        if (MessageBox.Show(message, Loc.T("CopyResultTitle"), MessageBoxButton.YesNo,
                 report.IsComplete ? MessageBoxImage.Information : MessageBoxImage.Warning) == MessageBoxResult.Yes)
             Process.Start(new ProcessStartInfo("explorer.exe", $"\"{report.OutputFolder}\"") { UseShellExecute = true });
     }
 
     private void BrowseDestination()
     {
-        var dialog = new OpenFolderDialog { Title = "Куда сохранить архив" };
+        var dialog = new OpenFolderDialog { Title = Loc.T("BrowseTitle") };
         if (Directory.Exists(DestinationPath))
             dialog.InitialDirectory = DestinationPath;
         if (dialog.ShowDialog() == true)
@@ -474,7 +496,7 @@ public sealed class MainViewModel : ObservableObject
 
         SelectionSummary = _allFiles.Count == 0
             ? ""
-            : $"Выбрано для копирования: {totalSelected:N0} файлов, {SizeFormatter.Format(selectedBytes)}";
+            : Loc.F("SelectionSummary", totalSelected.ToString("N0"), SizeFormatter.Format(selectedBytes));
     }
 
     private static void ShowInExplorer(FileItemViewModel? item)
@@ -493,7 +515,7 @@ public sealed class MainViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Не удалось открыть файл: {ex.Message}", "DiskSaver",
+            MessageBox.Show(Loc.F("OpenFileFailed", ex.Message), "DiskSaver",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
